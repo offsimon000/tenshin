@@ -361,6 +361,9 @@ body{background:var(--bg);min-height:100vh}
 .status-preparando{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
 .status-caminho{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
 .status-entregue{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.status-cancelado{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.order-cancel-notice{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:10px 14px;margin-top:10px;font-size:13px;color:#b91c1c;line-height:1.5}
+.order-cancel-notice strong{display:block;margin-bottom:2px;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
 .order-items-list{border-top:1px solid var(--border);padding-top:10px;margin-bottom:10px}
 .order-item-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;color:var(--muted)}
 .order-item-row span:first-child{flex:1;margin-right:8px}
@@ -1674,12 +1677,31 @@ async function showOrders() {
   const body = document.getElementById('orders-body');
   body.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--muted)"><div style="font-size:36px;margin-bottom:12px">⏳</div>Carregando pedidos...</div>`;
 
-  const statusLabel = {preparando:'Preparando', caminho:'A caminho', entregue:'Entregue'};
-  const statusClass = {preparando:'status-preparando', caminho:'status-caminho', entregue:'status-entregue'};
+  const statusLabel = {preparando:'👨‍🍳 Preparando', caminho:'🛵 A caminho', entregue:'✅ Entregue', cancelado:'❌ Cancelado'};
+  const statusClass = {preparando:'status-preparando', caminho:'status-caminho', entregue:'status-entregue', cancelado:'status-cancelado'};
+
+  // rastreia status anterior para detectar mudança para cancelado
+  const prevStatus = {};
 
   ordersUnsubscribeListener = db.collection('pedidos')
     .where('userId','==', currentUser.uid)
     .onSnapshot(snap => {
+      // detecta cancelamentos novos e avisa o cliente
+      snap.docChanges().forEach(change => {
+        if (change.type === 'modified') {
+          const data = change.doc.data();
+          const docId = change.doc.id;
+          if (data.status === 'cancelado' && prevStatus[docId] && prevStatus[docId] !== 'cancelado') {
+            const motivo = data.motivoCancelamento || 'Pedido cancelado pelo restaurante.';
+            showToast('Pedido cancelado ❌', motivo, '❌');
+          }
+          prevStatus[docId] = data.status;
+        }
+        if (change.type === 'added') {
+          prevStatus[change.doc.id] = change.doc.data().status;
+        }
+      });
+
       const firestoreOrders = snap.docs
         .map(d => d.data())
         .sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
@@ -1690,6 +1712,9 @@ async function showOrders() {
       body.innerHTML = firestoreOrders.map(o => {
         const tempoHtml = (o.status === 'preparando' || o.status === 'caminho')
           ? `<div class="order-date" style="margin-top:4px">⏱ Tempo estimado: ${TEMPO_ENTREGA}</div>`
+          : '';
+        const cancelHtml = o.status === 'cancelado' && o.motivoCancelamento
+          ? `<div class="order-cancel-notice"><strong>Motivo do cancelamento</strong>${o.motivoCancelamento}</div>`
           : '';
         return `
         <div class="order-card">
@@ -1708,6 +1733,7 @@ async function showOrders() {
             <div class="order-meta">${o.tipo} · ${o.pagamento}</div>
             <div class="order-total">R$ ${(o.total||0).toFixed(2).replace('.',',')}</div>
           </div>
+          ${cancelHtml}
         </div>`;
       }).join('');
     }, e => {

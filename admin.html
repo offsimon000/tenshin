@@ -484,6 +484,29 @@
 
   .action-btn.entregue:hover { background: #bbf7d0; }
 
+  /* ── MODAL CANCELAMENTO ── */
+  .cancel-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.55);
+    z-index: 400; display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .cancel-overlay.open { display: flex; animation: fadeIn .15s ease; }
+  .cancel-modal {
+    background: #fff; border-radius: 18px; width: 100%; max-width: 420px;
+    padding: 28px 24px 20px; box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  }
+  .cancel-modal h3 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+  .cancel-modal p { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+  .cancel-modal textarea {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 12px 14px; font-size: 13px; font-family: inherit; resize: none;
+    min-height: 90px; outline: none; transition: border-color .15s; color: var(--text); background: var(--bg);
+  }
+  .cancel-modal textarea:focus { border-color: var(--accent); }
+  .cancel-modal-footer { display: flex; gap: 10px; margin-top: 16px; }
+  .cancel-modal-back { flex: 1; padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; background: none; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; color: var(--text); }
+  .cancel-modal-confirm { flex: 1; padding: 12px; border: none; border-radius: 10px; background: #dc2626; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .cancel-modal-confirm:hover { background: #b91c1c; }
+
   .action-btn.cancelar {
     background: #fee2e2;
     color: #991b1b;
@@ -1723,7 +1746,7 @@ function renderCard(o) {
   let actions = '';
   if (status === 'novo' || status === 'pendente') {
     actions = `<button class="action-btn prep" onclick="updateStatus('${docId}','preparando')">🍱 Preparando</button>
-               <button class="action-btn cancelar" onclick="updateStatus('${docId}','cancelado')">✕</button>`;
+               <button class="action-btn cancelar" onclick="openCancelModal('${docId}')">✕ Cancelar</button>`;
   } else if (status === 'preparando') {
     if (tipo === 'delivery') {
       actions = `<button class="action-btn caminho" onclick="updateStatus('${docId}','caminho')">🛵 A caminho</button>`;
@@ -1770,6 +1793,7 @@ function renderCard(o) {
     tipo === 'delivery' && complemento
       ? `<div class="detail-row"><span class="detail-label">🔑 Compl.</span><span class="detail-value">${escHtml(complemento)}</span></div>` : '',
     obs          ? `<div class="detail-row"><span class="detail-label">📝 Obs.</span><span class="detail-value">${escHtml(obs)}</span></div>` : '',
+    o.motivoCancelamento ? `<div class="detail-row"><span class="detail-label" style="color:#dc2626">❌ Motivo</span><span class="detail-value" style="color:#dc2626;font-weight:600">${escHtml(o.motivoCancelamento)}</span></div>` : '',
     `<div class="detail-row"><span class="detail-label">🧾 Subtotal</span><span class="detail-value">${subtotal}</span></div>`,
     tipo === 'delivery'
       ? `<div class="detail-row"><span class="detail-label">🛵 Entrega</span><span class="detail-value">${entregaFee}</span></div>` : '',
@@ -1884,6 +1908,45 @@ function toggleDetails(docId) {
   const isOpen = panel.classList.toggle('open');
   btn.classList.toggle('open', isOpen);
   btn.childNodes[0].textContent = isOpen ? 'Ver menos ' : 'Ver mais ';
+}
+
+/* ── CANCELAMENTO ── */
+let _cancelDocId = null;
+
+function openCancelModal(docId) {
+  _cancelDocId = docId;
+  document.getElementById('cancel-motivo').value = '';
+  document.getElementById('cancel-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('cancel-motivo').focus(), 150);
+}
+
+function closeCancelModal(e) {
+  if (e && e.target !== document.getElementById('cancel-overlay')) return;
+  document.getElementById('cancel-overlay').classList.remove('open');
+  _cancelDocId = null;
+}
+
+async function confirmCancel() {
+  if (!_cancelDocId) return;
+  const motivo = document.getElementById('cancel-motivo').value.trim();
+  const btn = document.querySelector('.cancel-modal-confirm');
+  btn.disabled = true;
+  btn.textContent = 'Cancelando...';
+  try {
+    await db.collection('pedidos').doc(_cancelDocId).update({
+      status: 'cancelado',
+      motivoCancelamento: motivo || 'Pedido cancelado pelo restaurante.',
+      canceladoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('cancel-overlay').classList.remove('open');
+    _cancelDocId = null;
+  } catch(e) {
+    console.error(e);
+    alert('Erro ao cancelar pedido.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Confirmar cancelamento';
+  }
 }
 
 // ── TEMPO DE ENTREGA CONFIG ──
@@ -2335,5 +2398,19 @@ window.addEventListener('popstate', function() {
   history.pushState({tenshin: true}, '');
 });
 </script>
+
+<!-- ── MODAL CANCELAMENTO ── -->
+<div class="cancel-overlay" id="cancel-overlay" onclick="closeCancelModal(event)">
+  <div class="cancel-modal" onclick="event.stopPropagation()">
+    <h3>❌ Cancelar pedido</h3>
+    <p>Tem certeza que deseja cancelar este pedido?<br>O cliente será notificado com o motivo informado.</p>
+    <label style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px">Motivo do cancelamento</label>
+    <textarea id="cancel-motivo" placeholder="Ex: Produto indisponível, restaurante fechado, endereço fora da área de entrega..."></textarea>
+    <div class="cancel-modal-footer">
+      <button class="cancel-modal-back" onclick="closeCancelModal()">Voltar</button>
+      <button class="cancel-modal-confirm" onclick="confirmCancel()">Confirmar cancelamento</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
