@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tenshin — Painel Admin</title>
+<style>
+  :root {
+    --bg: #f5f5f7;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --accent: #c0392b;
+    --accent2: #e74c3c;
+    --green: #16a34a;
+    --yellow: #d97706;
+    --blue: #2563eb;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── LOGIN ── */
+  #login-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #c0392b22 100%);
+  }
+
+  .login-card {
+    background: white;
+    border-radius: 20px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  }
+
+  .login-logo {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+
+  .login-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 36px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .login-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .login-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  #login-err {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    color: #b91c1c;
+    font-size: 13px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    display: none;
+    text-align: left;
+    line-height: 1.5;
+  }
+
+  #login-err.show { display: block; }
+
+  .google-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    background: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    color: var(--text);
+    font-family: inherit;
+  }
+
+  .google-btn:hover { background: var(--bg); border-color: #aaa; }
+  .google-btn:active { background: #f0f0f0; }
+  .google-btn:disabled { opacity: .6; cursor: default; }
+
+  /* ── HEADER ── */
+  #app-screen { display: none; min-height: 100vh; }
+
+  header {
+    background: #1a1a2e;
+    color: white;
+    padding: 0 24px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,.3);
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent2);
+    letter-spacing: -0.5px;
+  }
+
+  .header-badge {
+    background: rgba(192,57,43,.3);
+    border: 1px solid rgba(192,57,43,.5);
+    color: #fca5a5;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .header-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,.7);
+  }
+
+  .header-user img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,.2);
+  }
+
+  .btn-logout {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    color: rgba(255,255,255,.8);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .2s;
+  }
+
+  .btn-logout:hover { background: rgba(255,255,255,.2); }
+
+  /* ── STATS ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 16px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    border: 1px solid var(--border);
+    border-left: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-card.total   { border-left-color: #94a3b8; }
+  .stat-card.prep    { border-left-color: #f59e0b; }
+  .stat-card.caminho { border-left-color: #3b82f6; }
+  .stat-card.entregue{ border-left-color: #22c55e; }
+
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: -1px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: .01em;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+  }
+
+  /* ── FILTER TABS ── */
+  .filter-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    width: fit-content;
+  }
+
+  .tab-btn {
+    padding: 7px 16px;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--muted);
+    font-family: inherit;
+    transition: all .15s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .tab-btn:hover { color: var(--text); background: var(--bg); }
+
+  .tab-btn.active {
+    background: var(--text);
+    color: white;
+    font-weight: 600;
+  }
+
+  .tab-count {
+    background: rgba(255,255,255,.2);
+    border-radius: 20px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .tab-btn:not(.active) .tab-count {
+    background: var(--bg);
+    color: #aaa;
+    font-weight: 600;
+  }
+
+  /* ── ORDERS GRID ── */
+  .orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+  }
+
+  .order-card {
+    background: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: border-color .2s, transform .2s;
+    animation: slideIn .3s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .order-card.new-pulse {
+    border-color: var(--accent2);
+    animation: newPulse 1.5s ease 3;
+  }
+
+  @keyframes newPulse {
+    0%,100% { border-color: var(--accent2); box-shadow: var(--shadow); }
+    50%      { border-color: var(--accent2); box-shadow: 0 0 0 4px rgba(231,76,60,.15), var(--shadow); }
+  }
+
+  .card-header {
+    padding: 14px 16px 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .card-id {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .card-time {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .status-badge {
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    white-space: nowrap;
+  }
+
+  .status-badge.novo       { background: #fef9ec; color: #a16207; border: 1px solid #fde68a; }
+  .status-badge.preparando { background: #fff0f5; color: #be185d; border: 1px solid #fbcfe8; }
+  .status-badge.caminho    { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .status-badge.entregue   { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .status-badge.retirada   { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+  .status-badge.cancelado  { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+  .card-customer {
+    padding: 0 16px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cust-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .cust-info {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .cust-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--muted);
+  }
+
+  .card-items {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .item-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text);
+    padding: 3px 0;
+  }
+
+  .item-qty {
+    font-weight: 700;
+    color: var(--muted);
+    margin-right: 6px;
+    min-width: 20px;
+  }
+
+  .item-name { flex: 1; }
+
+  .item-price {
+    font-weight: 600;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .card-footer {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .card-total {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .card-payment {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .action-btn {
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: none;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+
+  .action-btn.prep {
+    background: #fce7f3;
+    color: #9d174d;
+  }
+
+  .action-btn.prep:hover { background: #fbcfe8; }
+
+  .action-btn.caminho {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .action-btn.caminho:hover { background: #bfdbfe; }
+
+  .action-btn.entregue {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .action-btn.entregue:hover { background: #bbf7d0; }
+
+  .action-btn.cancelar {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .action-btn.cancelar:hover { background: #fecaca; }
+
+  .action-btn:disabled { opacity: .5; cursor: default; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--muted);
+  }
+
+  .empty-icon { font-size: 52px; margin-bottom: 16px; }
+  .empty-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .empty-sub { font-size: 14px; }
+
+  /* ── TOAST ── */
+  #toast-container {
+    position: fixed;
+    top: 76px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+  }
+
+  .toast {
+    background: #1a1a2e;
+    color: white;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 8px 30px rgba(0,0,0,.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    pointer-events: auto;
+    animation: toastIn .3s ease;
+    border-left: 4px solid var(--accent2);
+    max-width: 320px;
+  }
+
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .toast-fade {
+    animation: toastOut .3s ease forwards;
+  }
+
+  @keyframes toastOut {
+    to { opacity: 0; transform: translateX(20px); }
+  }
+
+  .toast-icon { font-size: 20px; }
+
+  .toast-body {}
+  .toast-title { font-size: 13px; }
+  .toast-detail { font-size: 11px; color: rgba(255,255,255,.6); margin-top: 2px; font-weight: 400; }
+
+  /* ── SOUND INDICATOR ── */
+  #sound-toggle {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    color: rgba(255,255,255,.8);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .2s;
+    line-height: 1;
+  }
+
+  #sound-toggle:hover { background: rgba(255,255,255,.2); }
+
+  /* ── LOADING ── */
+  .loading-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
+    background-size: 200% 100%;
+    animation: loadingAnim 1.5s infinite;
+    z-index: 9999;
+  }
+
+  @keyframes loadingAnim {
+    from { background-position: 100% 0; }
+    to   { background-position: -100% 0; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 16px; }
+    .main { padding: 0 16px 40px; }
+    header { padding: 0 16px; }
+    .orders-grid { grid-template-columns: 1fr; }
+    .login-card { padding: 36px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── LOADING ── -->
+<div class="loading-bar" id="loading-bar"></div>
+
+<!-- ── LOGIN SCREEN ── -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">天心</div>
+    <div class="login-sub">Tenshin Restaurante</div>
+    <div class="login-title">Acesso Restrito</div>
+    <p class="login-desc">Este painel é exclusivo para administradores do restaurante.</p>
+    <div id="login-err"></div>
+    <button class="google-btn" id="google-btn" onclick="signInWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        <path fill="none" d="M0 0h48v48H0z"/>
+      </svg>
+      Entrar com Google
+    </button>
+  </div>
+</div>
+
+<!-- ── APP SCREEN ── -->
+<div id="app-screen">
+
+  <!-- Header -->
+  <header>
+    <div class="header-brand">
+      <span class="header-logo">天心 Tenshin</span>
+      <span class="header-badge">Admin</span>
+    </div>
+    <div class="header-right">
+      <button id="sound-toggle" onclick="toggleSound()" title="Som de notificação">🔔</button>
+      <div class="header-user" id="header-user"></div>
+      <button class="btn-logout" onclick="doLogout()">Sair</button>
+    </div>
+  </header>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-card total">
+      <div class="stat-num" id="stat-total">0</div>
+      <div class="stat-label">Pedidos hoje</div>
+    </div>
+    <div class="stat-card prep">
+      <div class="stat-num" id="stat-prep">0</div>
+      <div class="stat-label">Preparando</div>
+    </div>
+    <div class="stat-card caminho">
+      <div class="stat-num" id="stat-caminho">0</div>
+      <div class="stat-label">A caminho</div>
+    </div>
+    <div class="stat-card entregue">
+      <div class="stat-num" id="stat-entregue">0</div>
+      <div class="stat-label">Entregues</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="tab-btn active" data-filter="todos" onclick="setFilter('todos')">
+        Todos <span class="tab-count" id="cnt-todos">0</span>
+      </button>
+      <button class="tab-btn" data-filter="novo" onclick="setFilter('novo')">
+        Novos <span class="tab-count" id="cnt-novo">0</span>
+      </button>
+      <button class="tab-btn" data-filter="preparando" onclick="setFilter('preparando')">
+        Preparando <span class="tab-count" id="cnt-preparando">0</span>
+      </button>
+      <button class="tab-btn" data-filter="caminho" onclick="setFilter('caminho')">
+        A caminho <span class="tab-count" id="cnt-caminho">0</span>
+      </button>
+      <button class="tab-btn" data-filter="entregue" onclick="setFilter('entregue')">
+        Entregue <span class="tab-count" id="cnt-entregue">0</span>
+      </button>
+    </div>
+
+    <!-- Orders Grid -->
+    <div class="orders-grid" id="orders-grid">
+      <div class="empty-state">
+        <div class="empty-icon">⏳</div>
+        <div class="empty-title">Carregando pedidos...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<script>
+// ── FIREBASE CONFIG ──
+const firebaseConfig = {
+  apiKey: "AIzaSyCzMIIgNOQsK801f0c_eMPRCtVZPAqRBE4",
+  authDomain: "projeto-tenshin.firebaseapp.com",
+  projectId: "projeto-tenshin",
+  storageBucket: "projeto-tenshin.firebasestorage.app",
+  messagingSenderId: "141900083566",
+  appId: "1:141900083566:web:90423dbf7d21aac913117f"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+// ── ADMIN WHITELIST ──
+// Adicione o e-mail do dono do restaurante aqui quando tiver
+const ADMIN_EMAILS = [
+  'samuelguimaraes949@gmail.com',
+  // 'dono@tenshin.com.br',  ← adicionar quando souber
+];
+
+// ── STATE ──
+let allOrders    = {};   // id → { id, ...data }
+let currentFilter = 'todos';
+let soundEnabled  = true;
+let unsubscribe   = null;
+let isFirstLoad   = true;
+let audioCtx      = null;
+
+// ── AUDIO ──
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playBeep() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioCtx();
+    const notes = [523, 659, 784]; // C5 E5 G5
+    notes.forEach((freq, i) => {
+      const osc  = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      const t = ctx.currentTime + i * 0.12;
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(0.35, t + 0.02);
+      gain.gain.linearRampToValueAtTime(0, t + 0.18);
+      osc.start(t);
+      osc.stop(t + 0.2);
+    });
+  } catch(e) { console.warn('Audio error:', e); }
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('sound-toggle').textContent = soundEnabled ? '🔔' : '🔕';
+}
+
+// ── TOAST ──
+function showToast(title, detail = '', icon = '🍣') {
+  const container = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `
+    <div class="toast-icon">${icon}</div>
+    <div class="toast-body">
+      <div class="toast-title">${title}</div>
+      ${detail ? `<div class="toast-detail">${detail}</div>` : ''}
+    </div>`;
+  container.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('toast-fade');
+    setTimeout(() => el.remove(), 300);
+  }, 4000);
+}
+
+// ── AUTH ──
+const GOOGLE_SVG = `<svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>`;
+
+async function signInWithGoogle() {
+  const btn = document.getElementById('google-btn');
+  const errEl = document.getElementById('login-err');
+  errEl.classList.remove('show');
+  btn.disabled = true;
+  btn.innerHTML = `${GOOGLE_SVG} Aguarde...`;
+
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    const result = await auth.signInWithPopup(provider);
+    const email = result.user?.email || '';
+    if (!ADMIN_EMAILS.includes(email)) {
+      await auth.signOut();
+      errEl.textContent = `Acesso negado. O e-mail ${email} não tem permissão de administrador.`;
+      errEl.classList.add('show');
+      btn.disabled = false;
+      btn.innerHTML = `${GOOGLE_SVG} Entrar com Google`;
+    }
+    // onAuthStateChanged vai cuidar do resto se OK
+  } catch(err) {
+    console.error('Login error:', err.code, err.message);
+    errEl.textContent = err.code === 'auth/popup-blocked'
+      ? 'Popup bloqueado. Permita popups para este site e tente novamente.'
+      : 'Erro ao entrar. Tente novamente.';
+    errEl.classList.add('show');
+    btn.disabled = false;
+    btn.innerHTML = `${GOOGLE_SVG} Entrar com Google`;
+  }
+}
+
+async function doLogout() {
+  if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+  await auth.signOut();
+}
+
+auth.onAuthStateChanged(user => {
+  if (user && ADMIN_EMAILS.includes(user.email)) {
+    showApp(user);
+  } else {
+    showLogin();
+  }
+});
+
+function showLogin() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-screen').style.display = 'none';
+  document.getElementById('loading-bar').style.display = 'none';
+  const btn = document.getElementById('google-btn');
+  btn.disabled = false;
+  btn.innerHTML = `${GOOGLE_SVG} Entrar com Google`;
+}
+
+function showApp(user) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'block';
+
+  // Header user info
+  const nome = user.displayName?.split(' ')[0] || user.email;
+  const avatarHtml = user.photoURL
+    ? `<img src="${user.photoURL}" referrerpolicy="no-referrer" alt="avatar">`
+    : '';
+  document.getElementById('header-user').innerHTML = `${avatarHtml}<span>${nome}</span>`;
+
+  // Start listening
+  startListening();
+}
+
+// ── FIRESTORE LISTENER ──
+function startListening() {
+  document.getElementById('loading-bar').style.display = 'block';
+  isFirstLoad = true;
+
+  unsubscribe = db.collection('pedidos')
+    .orderBy('createdAt', 'desc')
+    .onSnapshot(snapshot => {
+      document.getElementById('loading-bar').style.display = 'none';
+
+      snapshot.docChanges().forEach(change => {
+        if (change.type === 'added') {
+          // _docId = ID real do Firestore (nunca sobrescrito pelos dados do pedido)
+          const data = { ...change.doc.data(), _docId: change.doc.id };
+          const isNew = !allOrders[data._docId];
+          allOrders[data._docId] = data;
+
+          if (!isFirstLoad && isNew) {
+            playBeep();
+            const nome = data.nomeCliente || data.nome || 'Cliente';
+            const total = formatMoney(data.total || 0);
+            const numPedido = data.id || data.numero || '';
+            showToast(`Novo pedido${numPedido ? ' #'+numPedido : ''} de ${nome}`, `Total: ${total}`, '🍣');
+            // Pulse animation on card after render
+            setTimeout(() => {
+              const card = document.getElementById('card-' + data._docId);
+              if (card) card.classList.add('new-pulse');
+            }, 100);
+          }
+        } else if (change.type === 'modified') {
+          allOrders[change.doc.id] = { ...change.doc.data(), _docId: change.doc.id };
+        } else if (change.type === 'removed') {
+          delete allOrders[change.doc.id];
+        }
+      });
+
+      if (isFirstLoad) isFirstLoad = false;
+      renderOrders();
+      updateStats();
+    }, err => {
+      console.error('Firestore error:', err);
+      document.getElementById('loading-bar').style.display = 'none';
+    });
+}
+
+// ── FILTER ──
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === f);
+  });
+  renderOrders();
+}
+
+// ── RENDER ORDERS ──
+function renderOrders() {
+  const grid = document.getElementById('orders-grid');
+  let orders = Object.values(allOrders);
+
+  // Sort by createdAt desc
+  orders.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+  // Normaliza status (remove espaços, lowercase)
+  const normalizeStatus = o => (o.status || 'novo').toLowerCase().trim();
+
+  // Filter
+  if (currentFilter !== 'todos') {
+    orders = orders.filter(o => normalizeStatus(o) === currentFilter);
+  }
+
+  // Update counts
+  const all = Object.values(allOrders);
+  const cnt = (s) => all.filter(o => normalizeStatus(o) === s).length;
+  document.getElementById('cnt-todos').textContent = all.length;
+  document.getElementById('cnt-novo').textContent = cnt('novo');
+  document.getElementById('cnt-preparando').textContent = cnt('preparando');
+  document.getElementById('cnt-caminho').textContent = cnt('caminho');
+  document.getElementById('cnt-entregue').textContent = cnt('entregue');
+
+  if (orders.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">${currentFilter === 'todos' ? '🍽️' : '✨'}</div>
+        <div class="empty-title">${currentFilter === 'todos' ? 'Nenhum pedido ainda' : 'Sem pedidos nessa categoria'}</div>
+        <div class="empty-sub">${currentFilter === 'todos' ? 'Os pedidos aparecerão aqui em tempo real.' : 'Tudo limpo por aqui!'}</div>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = orders.map(o => renderCard(o)).join('');
+}
+
+function renderCard(o) {
+  try {
+  const docId     = o._docId || String(o.id || '');
+  const numPedido = o.id || o.numero || o.pedidoNum || docId.slice(-6).toUpperCase();
+  const status    = (o.status || 'novo').toLowerCase().trim();
+  const tipo      = (o.tipo || o.tipoEntrega || 'delivery').toLowerCase().trim();
+  const nome      = o.nomeCliente || o.nome || o.cliente || '—';
+  const tel       = o.telefone || o.tel || o.phone || '';
+  const endereco  = o.endereco || o.endereço || o.address || '';
+  const pagamento = o.formaPagamento || o.pagamento || o.payment || '—';
+  const total     = formatMoney(o.total || o.totalPedido || 0);
+  const time      = formatTime(o.createdAt);
+  // garante que items é sempre um array, independente do nome do campo
+  let rawItems = o.itens || o.items || o.produtos || o.cart || [];
+  const items = Array.isArray(rawItems) ? rawItems : [];
+
+  const statusLabel = {
+    novo: 'Novo',
+    preparando: 'Preparando',
+    caminho: 'A caminho',
+    entregue: 'Entregue',
+    cancelado: 'Cancelado',
+    retirada: 'Retirada',
+  }[status] || status;
+
+  // Actions
+  let actions = '';
+  if (status === 'novo' || status === 'pendente') {
+    actions = `<button class="action-btn prep" onclick="updateStatus('${docId}','preparando')">🍱 Preparando</button>
+               <button class="action-btn cancelar" onclick="updateStatus('${docId}','cancelado')">✕</button>`;
+  } else if (status === 'preparando') {
+    if (tipo === 'delivery') {
+      actions = `<button class="action-btn caminho" onclick="updateStatus('${docId}','caminho')">🛵 A caminho</button>`;
+    } else {
+      actions = `<button class="action-btn entregue" onclick="updateStatus('${docId}','entregue')">✅ Retirado</button>`;
+    }
+  } else if (status === 'caminho') {
+    actions = `<button class="action-btn entregue" onclick="updateStatus('${docId}','entregue')">✅ Entregue</button>`;
+  }
+
+  const tipoLabel = tipo === 'delivery'
+    ? `🛵 Delivery`
+    : `🏪 Retirada`;
+
+  const itemRows = items.map(it => {
+    const preco = formatMoney((it.preco || it.price || 0) * (it.qty || it.quantidade || 1));
+    const nome  = it.nome || it.name || it.titulo || '';
+    const qty   = it.qty || it.quantidade || 1;
+    return `<div class="item-row">
+      <span class="item-qty">${qty}×</span>
+      <span class="item-name">${escHtml(nome)}</span>
+      <span class="item-price">${preco}</span>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="order-card" id="card-${docId}">
+      <div class="card-header">
+        <div>
+          <div class="card-id">#${numPedido}</div>
+          <div class="card-time">⏱ ${time}</div>
+        </div>
+        <span class="status-badge ${status}">${statusLabel}</span>
+      </div>
+      <div class="card-customer">
+        <div class="cust-name">${escHtml(nome)}</div>
+        <div class="cust-info">
+          ${tel ? `<span>📞 ${escHtml(tel)}</span>` : ''}
+          ${endereco && tipo === 'delivery' ? `<span>📍 ${escHtml(endereco)}</span>` : ''}
+        </div>
+        <span class="cust-type">${tipoLabel}</span>
+      </div>
+      <div class="card-items">${itemRows || '<div style="color:var(--muted);font-size:13px">—</div>'}</div>
+      <div class="card-footer">
+        <div>
+          <div class="card-total">${total}</div>
+          <div class="card-payment">💳 ${escHtml(pagamento)}</div>
+        </div>
+        <div class="card-actions">${actions}</div>
+      </div>
+    </div>`;
+  } catch(err) {
+    console.error('Erro ao renderizar card:', err, o);
+    return `<div class="order-card" style="padding:16px;color:var(--muted);font-size:13px">
+      <b>#${String(o.id||'').slice(-6).toUpperCase()}</b> — Erro ao exibir pedido
+    </div>`;
+  }
+}
+
+// ── UPDATE STATUS ──
+async function updateStatus(docId, newStatus) {
+  // Optimistic UI (id aqui é sempre o _docId do Firestore)
+  if (allOrders[docId]) allOrders[docId].status = newStatus;
+  renderOrders();
+  updateStats();
+
+  try {
+    await db.collection('pedidos').doc(docId).update({
+      status: newStatus,
+      [`${newStatus}At`]: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch(err) {
+    console.error('Erro ao atualizar status:', err);
+    showToast('Erro ao atualizar', 'Tente novamente', '⚠️');
+  }
+}
+
+// ── STATS ──
+function updateStats() {
+  const orders = Object.values(allOrders);
+
+  // Today's orders only
+  const today = new Date();
+  const todayOrders = orders.filter(o => {
+    if (!o.createdAt?.seconds) return true; // sem data → conta
+    const d = new Date(o.createdAt.seconds * 1000);
+    return d.getFullYear() === today.getFullYear()
+        && d.getMonth() === today.getMonth()
+        && d.getDate() === today.getDate();
+  });
+
+  const cnt = s => todayOrders.filter(o => (o.status||'novo').toLowerCase() === s).length;
+
+  document.getElementById('stat-total').textContent = todayOrders.length;
+  document.getElementById('stat-prep').textContent = cnt('preparando');
+  document.getElementById('stat-caminho').textContent = cnt('caminho');
+  document.getElementById('stat-entregue').textContent = cnt('entregue');
+}
+
+// ── UTILS ──
+function formatMoney(v) {
+  return 'R$ ' + Number(v).toFixed(2).replace('.', ',');
+}
+
+function formatTime(ts) {
+  if (!ts?.seconds) return '—';
+  const d = new Date(ts.seconds * 1000);
+  const now = new Date();
+  const diff = Math.floor((now - d) / 60000);
+  if (diff < 1) return 'agora mesmo';
+  if (diff < 60) return `${diff} min atrás`;
+  return d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
