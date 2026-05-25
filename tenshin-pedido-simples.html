@@ -378,22 +378,20 @@ body{background:var(--bg);min-height:100vh}
 
   /* Header */
   .header{padding:0 36px;gap:20px;box-shadow:0 4px 32px rgba(0,0,0,.55)}
-  .header-search-wrap{display:flex}
+  .header-search-wrap{display:none}
   .logo{width:48px;height:48px;font-size:14px}
   .header-info h1{font-size:18px}
-
-  /* Search PC */
-  .header-search{background:#fff;border:none;border-radius:24px;padding:9px 16px;box-shadow:0 1px 6px rgba(0,0,0,.25)}
-  .header-search:focus-within{box-shadow:0 0 0 2px var(--red),0 1px 6px rgba(0,0,0,.2)}
-  .header-search input{color:#1a1a1a;font-size:13px}
-  .header-search input::placeholder{color:#aaa}
-  .header-search-icon{color:#bbb}
 
   /* Esconde busca mobile e grade de cats (removida) */
   .search-wrap{display:none}
   .cats-mobile{display:none !important}
-  .search-icon-btn{display:none !important}
-  .search-bar-popup{display:none !important}
+
+  /* Lupa visível no desktop também */
+  .search-icon-btn{display:flex !important}
+  .search-icon-btn svg{width:20px;height:20px}
+
+  /* Popup de busca — funciona em todos os tamanhos */
+  .search-bar-popup{top:70px}
 
   /* Banners maiores no desktop */
   .promo-banners{padding:16px 0 16px 24px}
@@ -551,12 +549,64 @@ body{background:var(--bg);min-height:100vh}
 
 /* ── SAVED ADDRESSES ── */
 .saved-addr-section{margin-bottom:12px}
-.saved-addr-section h5{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.saved-addr-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.saved-addr-section h5{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0}
+.saved-addr-manage-btn{font-size:11px;color:var(--red);background:none;border:none;cursor:pointer;font-family:inherit;font-weight:600;padding:0}
 .saved-addr-chips{display:flex;flex-wrap:wrap;gap:8px}
-.saved-addr-chip{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:all .15s;font-family:inherit}
-.saved-addr-chip:hover{border-color:var(--red);background:#fff5f7;color:var(--red)}
-[data-theme="dark"] .saved-addr-chip{background:#2a2a2d;border-color:var(--border);color:var(--text)}
-[data-theme="dark"] .saved-addr-chip:hover{border-color:var(--red);background:#3a0008}
+.saved-addr-chip{display:flex;align-items:center;gap:0;border-radius:20px;border:1.5px solid var(--border);background:#fff;overflow:hidden;transition:border-color .15s}
+.saved-addr-chip:hover{border-color:var(--red)}
+.saved-addr-chip-fill{display:flex;align-items:center;gap:6px;padding:8px 10px 8px 14px;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;background:none;border:none;font-family:inherit;transition:color .15s}
+.saved-addr-chip:hover .saved-addr-chip-fill{color:var(--red)}
+.saved-addr-chip-edit{display:flex;align-items:center;padding:8px 10px 8px 4px;background:none;border:none;cursor:pointer;color:var(--muted);transition:color .15s;font-size:13px}
+.saved-addr-chip-edit:hover{color:var(--red)}
+[data-theme="dark"] .saved-addr-chip{background:#2a2a2d;border-color:var(--border)}
+[data-theme="dark"] .saved-addr-chip-fill{color:var(--text)}
+[data-theme="dark"] .saved-addr-chip:hover{border-color:var(--red)}
+[data-theme="dark"] .saved-addr-chip:hover .saved-addr-chip-fill{color:var(--red)}
+
+/* ── ADDRESS MANAGER ── */
+.addr-mgr-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;display:none;align-items:flex-end;justify-content:center;padding:0}
+.addr-mgr-overlay.open{display:flex;animation:fadeIn .2s ease}
+.addr-mgr{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden}
+.addr-mgr-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.addr-mgr-header h3{font-size:16px;font-weight:700;color:var(--text)}
+.addr-mgr-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);line-height:1;padding:4px}
+.addr-mgr-body{overflow-y:auto;flex:1;padding:12px 20px 24px;scrollbar-width:none}
+.addr-mgr-body::-webkit-scrollbar{display:none}
+.addr-mgr-item{border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;transition:border-color .15s}
+.addr-mgr-item-row{display:flex;align-items:center;gap:12px}
+.addr-mgr-icon{font-size:22px;flex-shrink:0}
+.addr-mgr-info{flex:1;min-width:0}
+.addr-mgr-label{font-weight:700;font-size:14px;color:var(--text)}
+.addr-mgr-detail{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.addr-mgr-btns{display:flex;gap:4px;flex-shrink:0}
+.addr-mgr-edit-btn,.addr-mgr-del-btn{background:none;border:none;cursor:pointer;padding:7px;border-radius:8px;transition:background .15s;color:var(--muted)}
+.addr-mgr-edit-btn:hover{background:var(--bg);color:var(--text)}
+.addr-mgr-del-btn:hover{background:#fff0f0;color:var(--red)}
+/* Inline edit form */
+.addr-inline-form{margin-top:12px;border-top:1px solid var(--border);padding-top:12px;display:none}
+.addr-inline-form.open{display:block}
+.addr-fg{margin-bottom:10px}
+.addr-fg label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px}
+.addr-fg input,.addr-fg select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:var(--text);outline:none;transition:border-color .15s}
+.addr-fg input:focus,.addr-fg select:focus{border-color:var(--red)}
+.addr-form-row{display:flex;gap:8px}
+.addr-form-actions{display:flex;gap:8px;margin-top:4px}
+.addr-save-btn{flex:1;padding:10px;background:var(--red);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.addr-cancel-btn{padding:10px 14px;background:none;border:1.5px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;color:var(--text)}
+/* Add new */
+.addr-add-new-btn{width:100%;padding:13px;border:2px dashed var(--border);background:none;border-radius:12px;font-size:14px;color:var(--muted);cursor:pointer;margin-top:4px;transition:all .15s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
+.addr-add-new-btn:hover{border-color:var(--red);color:var(--red)}
+/* New address form */
+.addr-new-form{border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-top:10px;display:none}
+.addr-new-form.open{display:block}
+[data-theme="dark"] .addr-mgr{background:var(--card)}
+[data-theme="dark"] .addr-mgr-header{border-color:var(--border)}
+[data-theme="dark"] .addr-mgr-item{border-color:var(--border)}
+[data-theme="dark"] .addr-fg input,[data-theme="dark"] .addr-fg select{background:var(--bg);border-color:var(--border);color:var(--text)}
+[data-theme="dark"] .addr-mgr-edit-btn:hover{background:var(--bg)}
+[data-theme="dark"] .addr-add-new-btn{border-color:var(--border)}
+[data-theme="dark"] .addr-new-form{border-color:var(--border)}
 
 /* ── LGPD BANNER ── */
 #lgpd-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#fff;border-top:1px solid #e5e7eb;box-shadow:0 -8px 32px rgba(0,0,0,.12);padding:16px 20px;transform:translateY(100%);transition:transform .4s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -707,20 +757,15 @@ body{background:var(--bg);min-height:100vh}
   <button class="hamburger-btn" id="hamburger-btn" onclick="openDrawer()" aria-label="Abrir menu">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
-  <button class="search-icon-btn" id="search-icon-btn" onclick="toggleSearchPopup()" aria-label="Buscar" style="display:flex">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-  </button>
   <div class="logo">天信</div>
   <div class="header-info">
     <h1>Tenshin 天信</h1>
     <span><span class="open-dot"></span> Aberto agora · Entrega <span id="header-entrega-tempo">30-45 min</span></span>
   </div>
-  <div class="header-search-wrap">
-    <div class="header-search">
-      <span class="header-search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-      <input type="text" placeholder="Buscar no cardápio..." id="search-input-pc" oninput="filterItems(this.value)">
-    </div>
-  </div>
+  <div style="flex:1"></div>
+  <button class="search-icon-btn" id="search-icon-btn" onclick="toggleSearchPopup()" aria-label="Buscar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </button>
   <div class="header-auth" id="header-auth">
     <button class="btn-login" onclick="showLogin()">Entrar</button>
   </div>
@@ -784,6 +829,11 @@ body{background:var(--bg);min-height:100vh}
     </div>
   </div>
   <div class="drawer-divider"></div>
+  <button class="drawer-theme-btn" id="drawer-addr-btn" onclick="openAddrMgrFromDrawer()" style="display:none">
+    <div class="drawer-theme-icon">📍</div>
+    <span class="drawer-theme-label">Meus Endereços</span>
+  </button>
+  <div class="drawer-divider" id="drawer-addr-divider" style="display:none"></div>
   <button class="drawer-theme-btn" id="drawer-theme-btn" onclick="toggleTheme()">
     <div class="drawer-theme-icon" id="drawer-theme-icon">🌙</div>
     <span class="drawer-theme-label" id="drawer-theme-label">Modo escuro</span>
@@ -1051,7 +1101,10 @@ body{background:var(--bg);min-height:100vh}
           <button class="type-btn" onclick="selType(this,'retirada')"><span>🏪</span>Retirada</button>
         </div>
         <div id="saved-addr-section" class="saved-addr-section" style="display:none">
-          <h5>Endereços salvos</h5>
+          <div class="saved-addr-section-head">
+            <h5>Endereços salvos</h5>
+            <button class="saved-addr-manage-btn" onclick="openAddrMgr()">Gerenciar</button>
+          </div>
           <div class="saved-addr-chips" id="saved-addr-chips"></div>
         </div>
         <div id="addr-fields">
@@ -1258,6 +1311,11 @@ auth.onAuthStateChanged(user => {
   loggedIn = !!user;
   currentUser = user;
   renderHeaderAuth();
+  // Botão de endereços no drawer: visível só quando logado
+  const addrBtn = document.getElementById('drawer-addr-btn');
+  const addrDiv = document.getElementById('drawer-addr-divider');
+  if (addrBtn) addrBtn.style.display = user ? 'flex' : 'none';
+  if (addrDiv) addrDiv.style.display = user ? 'block' : 'none';
   if (user && location.hash === '#pedidos') {
     showOrders();
   }
@@ -1761,6 +1819,16 @@ function filterItems(q) {
 }
 
 /* ---- SAVED ADDRESSES ---- */
+/* ───────────────────────────────────────────
+   ENDEREÇOS SALVOS — CRUD COMPLETO
+─────────────────────────────────────────── */
+function addrIcon(label) {
+  if (!label) return '🏠';
+  if (label.toLowerCase().includes('trabalho')) return '💼';
+  if (label.toLowerCase().includes('outro')) return '📍';
+  return '🏠';
+}
+
 async function loadSavedAddresses() {
   if (!loggedIn || !currentUser) return;
   const section = document.getElementById('saved-addr-section');
@@ -1771,23 +1839,29 @@ async function loadSavedAddresses() {
     if (snap.empty) { section.style.display = 'none'; return; }
     const docs = snap.docs.map(d => ({id: d.id, ...d.data()}));
     chips.innerHTML = docs.map(e => {
-      const icon = e.label === 'Trabalho' ? '💼' : '🏠';
-      const label = e.label || 'Endereço';
-      return `<button class="saved-addr-chip" onclick="fillAddress('${(e.rua||'').replace(/'/g,"\\'")}','${(e.bairro||'').replace(/'/g,"\\'")}','${(e.complemento||'').replace(/'/g,"\\'")}')">
-        ${icon} ${label}
-      </button>`;
+      const icon  = addrIcon(e.label);
+      const label = e.label || 'Casa';
+      const rua   = (e.rua||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      const bairro= (e.bairro||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      const comp  = (e.complemento||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      return `<div class="saved-addr-chip">
+        <button class="saved-addr-chip-fill" onclick="fillAddress('${rua}','${bairro}','${comp}')">${icon} ${label}</button>
+        <button class="saved-addr-chip-edit" onclick="openAddrMgr()" title="Editar endereços">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+      </div>`;
     }).join('');
     section.style.display = 'block';
   } catch(e) {
-    console.warn('Erro ao carregar endereços salvos:', e);
+    console.warn('Erro ao carregar endereços:', e);
     section.style.display = 'none';
   }
 }
 
 function fillAddress(rua, bairro, complemento) {
-  const ruaEl   = document.getElementById('addr-rua');
+  const ruaEl    = document.getElementById('addr-rua');
   const bairroEl = document.getElementById('addr-bairro');
-  const compEl  = document.getElementById('addr-comp');
+  const compEl   = document.getElementById('addr-comp');
   if (ruaEl)    ruaEl.value    = rua;
   if (bairroEl) bairroEl.value = bairro;
   if (compEl)   compEl.value   = complemento;
@@ -1804,6 +1878,176 @@ async function saveAddressIfNew(rua, bairro, complemento) {
       await colRef.add({ rua, bairro, complemento: complemento || '', label: 'Casa', savedAt: firebase.firestore.FieldValue.serverTimestamp() });
     }
   } catch(e) { console.warn('Erro ao salvar endereço:', e); }
+}
+
+/* ── Address Manager Modal ── */
+let _addrDocs = [];
+
+async function openAddrMgr() {
+  if (!loggedIn || !currentUser) { showLogin(); return; }
+  document.getElementById('addr-mgr-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  await renderAddrMgr();
+}
+
+function openAddrMgrFromDrawer() {
+  closeDrawer();
+  setTimeout(openAddrMgr, 250);
+}
+
+function closeAddrMgr(e) {
+  if (e && e.target !== document.getElementById('addr-mgr-overlay')) return;
+  document.getElementById('addr-mgr-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  loadSavedAddresses(); // atualiza chips no checkout
+}
+
+async function renderAddrMgr() {
+  const body = document.getElementById('addr-mgr-body');
+  body.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted)">Carregando...</div>';
+  try {
+    const snap = await db.collection('usuarios').doc(currentUser.uid).collection('enderecos').orderBy('savedAt','asc').get();
+    _addrDocs = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    buildAddrMgrHTML();
+  } catch(e) {
+    // fallback sem orderBy se não tiver índice
+    try {
+      const snap2 = await db.collection('usuarios').doc(currentUser.uid).collection('enderecos').get();
+      _addrDocs = snap2.docs.map(d => ({id: d.id, ...d.data()}));
+      buildAddrMgrHTML();
+    } catch(e2) {
+      body.innerHTML = '<div style="text-align:center;padding:24px;color:var(--red)">Erro ao carregar endereços.</div>';
+    }
+  }
+}
+
+function buildAddrMgrHTML() {
+  const body = document.getElementById('addr-mgr-body');
+  const items = _addrDocs.map((e, i) => `
+    <div class="addr-mgr-item" id="addr-item-${i}">
+      <div class="addr-mgr-item-row">
+        <div class="addr-mgr-icon">${addrIcon(e.label)}</div>
+        <div class="addr-mgr-info">
+          <div class="addr-mgr-label">${e.label || 'Casa'}</div>
+          <div class="addr-mgr-detail">${e.rua || ''}${e.bairro ? ', '+e.bairro : ''}${e.complemento ? ' · '+e.complemento : ''}</div>
+        </div>
+        <div class="addr-mgr-btns">
+          <button class="addr-mgr-edit-btn" onclick="toggleAddrEdit(${i})" title="Editar">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="addr-mgr-del-btn" onclick="deleteAddr('${e.id}',${i})" title="Excluir">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="addr-inline-form" id="addr-edit-form-${i}">
+        <div class="addr-fg">
+          <label>Apelido</label>
+          <select id="aef-label-${i}" onchange="updateAddrIcon(${i})">
+            <option ${(e.label||'Casa')==='Casa'?'selected':''}>Casa</option>
+            <option ${e.label==='Trabalho'?'selected':''}>Trabalho</option>
+            <option ${e.label==='Outro'?'selected':''}>Outro</option>
+          </select>
+        </div>
+        <div class="addr-fg">
+          <label>Rua e número</label>
+          <input id="aef-rua-${i}" value="${(e.rua||'').replace(/"/g,'&quot;')}">
+        </div>
+        <div class="addr-form-row">
+          <div class="addr-fg" style="flex:1">
+            <label>Bairro</label>
+            <input id="aef-bairro-${i}" value="${(e.bairro||'').replace(/"/g,'&quot;')}">
+          </div>
+          <div class="addr-fg" style="flex:1">
+            <label>Complemento</label>
+            <input id="aef-comp-${i}" value="${(e.complemento||'').replace(/"/g,'&quot;')}">
+          </div>
+        </div>
+        <div class="addr-form-actions">
+          <button class="addr-cancel-btn" onclick="toggleAddrEdit(${i})">Cancelar</button>
+          <button class="addr-save-btn" onclick="saveAddrEdit('${e.id}',${i})">Salvar</button>
+        </div>
+      </div>
+    </div>`).join('');
+
+  body.innerHTML = items + `
+    <button class="addr-add-new-btn" onclick="toggleNewAddrForm()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Adicionar novo endereço
+    </button>
+    <div class="addr-new-form" id="addr-new-form">
+      <div class="addr-fg">
+        <label>Apelido</label>
+        <select id="anf-label">
+          <option>Casa</option>
+          <option>Trabalho</option>
+          <option>Outro</option>
+        </select>
+      </div>
+      <div class="addr-fg">
+        <label>Rua e número</label>
+        <input id="anf-rua" placeholder="Ex: Rua das Flores, 123">
+      </div>
+      <div class="addr-form-row">
+        <div class="addr-fg" style="flex:1">
+          <label>Bairro</label>
+          <input id="anf-bairro" placeholder="Ex: Centro">
+        </div>
+        <div class="addr-fg" style="flex:1">
+          <label>Complemento</label>
+          <input id="anf-comp" placeholder="Apto, bloco...">
+        </div>
+      </div>
+      <div class="addr-form-actions">
+        <button class="addr-cancel-btn" onclick="toggleNewAddrForm()">Cancelar</button>
+        <button class="addr-save-btn" onclick="saveNewAddr()">Salvar</button>
+      </div>
+    </div>`;
+}
+
+function toggleAddrEdit(i) {
+  const form = document.getElementById('addr-edit-form-'+i);
+  form.classList.toggle('open');
+}
+
+function toggleNewAddrForm() {
+  const form = document.getElementById('addr-new-form');
+  form.classList.toggle('open');
+  if (form.classList.contains('open')) {
+    setTimeout(() => document.getElementById('anf-rua').focus(), 50);
+  }
+}
+
+async function saveAddrEdit(docId, i) {
+  const label = document.getElementById('aef-label-'+i).value;
+  const rua   = document.getElementById('aef-rua-'+i).value.trim();
+  const bairro= document.getElementById('aef-bairro-'+i).value.trim();
+  const comp  = document.getElementById('aef-comp-'+i).value.trim();
+  if (!rua || !bairro) { alert('Preencha rua e bairro.'); return; }
+  try {
+    await db.collection('usuarios').doc(currentUser.uid).collection('enderecos').doc(docId).update({ label, rua, bairro, complemento: comp });
+    await renderAddrMgr();
+  } catch(e) { console.warn(e); alert('Erro ao salvar.'); }
+}
+
+async function deleteAddr(docId, i) {
+  if (!confirm('Excluir este endereço?')) return;
+  try {
+    await db.collection('usuarios').doc(currentUser.uid).collection('enderecos').doc(docId).delete();
+    await renderAddrMgr();
+  } catch(e) { console.warn(e); alert('Erro ao excluir.'); }
+}
+
+async function saveNewAddr() {
+  const label = document.getElementById('anf-label').value;
+  const rua   = document.getElementById('anf-rua').value.trim();
+  const bairro= document.getElementById('anf-bairro').value.trim();
+  const comp  = document.getElementById('anf-comp').value.trim();
+  if (!rua || !bairro) { alert('Preencha rua e bairro.'); return; }
+  try {
+    await db.collection('usuarios').doc(currentUser.uid).collection('enderecos').add({ label, rua, bairro, complemento: comp, savedAt: firebase.firestore.FieldValue.serverTimestamp() });
+    await renderAddrMgr();
+  } catch(e) { console.warn(e); alert('Erro ao adicionar.'); }
 }
 
 /* ---- SEARCH POPUP ---- */
@@ -2196,6 +2440,19 @@ if (document.readyState === 'loading') {
 </script>
 
 <!-- ── BANNER LGPD ── -->
+<!-- ── ADDRESS MANAGER MODAL ── -->
+<div class="addr-mgr-overlay" id="addr-mgr-overlay" onclick="closeAddrMgr(event)">
+  <div class="addr-mgr" onclick="event.stopPropagation()">
+    <div class="addr-mgr-header">
+      <h3>📍 Meus Endereços</h3>
+      <button class="addr-mgr-close" onclick="closeAddrMgr()">✕</button>
+    </div>
+    <div class="addr-mgr-body" id="addr-mgr-body">
+      <!-- preenchido por JS -->
+    </div>
+  </div>
+</div>
+
 <div id="lgpd-banner" role="dialog" aria-label="Aviso de cookies e privacidade">
   <div class="lgpd-text">
     <b>🍪 Cookies e Privacidade</b>
