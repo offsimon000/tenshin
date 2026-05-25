@@ -1800,22 +1800,54 @@ function applyFilter(cat) {
 }
 
 function filterItems(q) {
-  q = q.toLowerCase().trim();
+  q = (q || '').toLowerCase().trim();
+
+  // Sem busca → mostra tudo
+  if (q === '') {
+    document.querySelectorAll('.item').forEach(i => i.style.display = 'flex');
+    document.querySelectorAll('[id^="items-"]').forEach(sec => {
+      sec.style.display = '';
+      const label = document.getElementById('label-' + sec.id.replace('items-',''));
+      if (label) label.style.display = '';
+    });
+    const banner = document.querySelector('.banner');
+    if (banner) banner.style.display = 'flex';
+    return;
+  }
+
+  // Quais categorias batem com a busca?
+  // (ex: "sushi", "temaki", "pratos quentes", "bebida", "combinado")
+  const catNames = typeof CAT_NAMES !== 'undefined' ? CAT_NAMES : {};
+  const matchedCats = new Set();
+  Object.entries(catNames).forEach(([key, nome]) => {
+    if (nome.toLowerCase().includes(q) || key.toLowerCase().includes(q)) {
+      matchedCats.add(key);
+    }
+  });
+
+  // Filtra cada produto
   document.querySelectorAll('.item').forEach(item => {
-    const name = item.querySelector('.item-name').textContent.toLowerCase();
-    item.style.display = name.includes(q) ? 'flex' : 'none';
+    const nome  = (item.querySelector('.item-name')?.textContent  || '').toLowerCase();
+    const desc  = (item.querySelector('.item-desc')?.textContent  || '').toLowerCase();
+    const badge = (item.querySelector('.item-badge')?.textContent || '').toLowerCase();
+    const cat   = (item.dataset.cat || '').toLowerCase();
+
+    const bate = nome.includes(q) || desc.includes(q) || badge.includes(q) || matchedCats.has(cat);
+    item.style.display = bate ? 'flex' : 'none';
   });
-  // esconde label e seção quando nenhum item está visível
-  document.querySelectorAll('[id^="items-"]').forEach(section => {
-    const id = section.id.replace('items-', '');
+
+  // Esconde seções/labels vazias
+  document.querySelectorAll('[id^="items-"]').forEach(sec => {
+    const id    = sec.id.replace('items-', '');
     const label = document.getElementById('label-' + id);
-    const hasVisible = Array.from(section.querySelectorAll('.item')).some(i => i.style.display !== 'none');
-    if (label) label.style.display = hasVisible ? '' : 'none';
-    section.style.display = hasVisible ? '' : 'none';
+    const temVisivel = Array.from(sec.querySelectorAll('.item')).some(i => i.style.display !== 'none');
+    if (label) label.style.display = temVisivel ? '' : 'none';
+    sec.style.display = temVisivel ? '' : 'none';
   });
-  // esconde banner se não bater com a busca
+
+  // Esconde banner durante busca
   const banner = document.querySelector('.banner');
-  if (banner) banner.style.display = q === '' ? 'flex' : 'none';
+  if (banner) banner.style.display = 'none';
 }
 
 /* ---- SAVED ADDRESSES ---- */
