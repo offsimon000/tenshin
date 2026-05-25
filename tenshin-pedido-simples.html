@@ -192,7 +192,8 @@ body{background:var(--bg);min-height:100vh}
 /* MODAL */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
-.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:0 0 32px;max-height:90vh;overflow-y:auto;position:relative}
+.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:0 0 32px;max-height:90vh;overflow-y:auto;position:relative;scrollbar-width:none;-ms-overflow-style:none}
+.modal::-webkit-scrollbar{display:none}
 .modal-handle{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,.6);position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:5;backdrop-filter:blur(4px)}
 .modal-img{width:100%;height:210px;background:#efefef;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:72px}
 .modal-img img{width:100%;height:100%;object-fit:cover;display:block}
@@ -220,10 +221,11 @@ body{background:var(--bg);min-height:100vh}
 .modal-add:active{background:var(--red2)}
 
 /* CHECKOUT MODAL */
-.checkout-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:none;align-items:flex-end;justify-content:center}
+.checkout-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:none;align-items:flex-end;justify-content:center;overflow:hidden}
 .checkout-overlay.open{display:flex}
-.checkout-modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:90vh;display:flex;flex-direction:column}
-.checkout-modal-scroll{overflow-y:auto;flex:1;min-height:0;padding-bottom:4px}
+.checkout-modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.checkout-modal-scroll{overflow-y:auto;flex:1;min-height:0;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none}
+.checkout-modal-scroll::-webkit-scrollbar{display:none}
 .checkout-modal-footer{padding:14px 20px 24px;background:#fff;border-top:1px solid var(--border);flex-shrink:0}
 .checkout-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between}
 .checkout-header h2{font-size:18px;font-weight:600}
@@ -288,6 +290,22 @@ body{background:var(--bg);min-height:100vh}
 .hamburger-btn{background:none;border:none;color:rgba(255,255,255,.8);cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;border-radius:8px;flex-shrink:0;transition:background .15s;position:relative;z-index:1}
 .hamburger-btn:hover{background:rgba(255,255,255,.1)}
 .hamburger-btn:active{background:rgba(255,255,255,.15);transform:scale(.92)}
+
+/* SEARCH ICON BUTTON (mobile) */
+.search-icon-btn{background:none;border:none;color:rgba(255,255,255,.8);cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;border-radius:8px;flex-shrink:0;transition:background .15s;position:relative;z-index:1}
+.search-icon-btn:hover{background:rgba(255,255,255,.1)}
+.search-icon-btn:active{background:rgba(255,255,255,.15);transform:scale(.92)}
+
+/* SEARCH POPUP (mobile) */
+.search-bar-popup{position:fixed;top:62px;left:0;right:0;z-index:99;background:#fff;border-bottom:1px solid var(--border);padding:10px 16px;display:none;animation:searchPopupIn .2s ease}
+.search-bar-popup.open{display:block}
+@keyframes searchPopupIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.search-bar-popup-inner{display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:24px;padding:11px 16px;border:1.5px solid transparent}
+.search-bar-popup-inner:focus-within{border-color:var(--red);background:#fff}
+.search-bar-popup-inner input{border:none;background:none;font-size:14px;width:100%;outline:none;color:var(--text);font-weight:400;font-family:inherit}
+.search-bar-popup-inner input::placeholder{color:var(--muted)}
+[data-theme="dark"] .search-bar-popup{background:var(--card);border-color:var(--border)}
+[data-theme="dark"] .search-bar-popup-inner{background:var(--bg)}
 
 /* AUTH HEADER */
 .header-auth{display:flex;align-items:center;gap:8px;flex-shrink:0;position:relative;z-index:1}
@@ -371,9 +389,11 @@ body{background:var(--bg);min-height:100vh}
   .header-search input::placeholder{color:#aaa}
   .header-search-icon{color:#bbb}
 
-  /* Esconde busca mobile, mantém cats visíveis no desktop */
+  /* Esconde busca mobile e grade de cats (removida) */
   .search-wrap{display:none}
-  .cats-mobile{display:flex;padding:16px 24px 14px}
+  .cats-mobile{display:none !important}
+  .search-icon-btn{display:none !important}
+  .search-bar-popup{display:none !important}
 
   /* Banners maiores no desktop */
   .promo-banners{padding:16px 0 16px 24px}
@@ -475,10 +495,11 @@ body{background:var(--bg);min-height:100vh}
 }
 
 /* CART REVIEW */
-.cart-review-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:none;align-items:flex-end;justify-content:center}
+.cart-review-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:none;align-items:flex-end;justify-content:center;overflow:hidden}
 .cart-review-overlay.open{display:flex}
-.cart-review-modal{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:520px;max-height:90vh;display:flex;flex-direction:column}
-.cart-review-scroll{overflow-y:auto;flex:1;min-height:0}
+.cart-review-modal{background:#fff;border-radius:24px 24px 0 0;width:100%;max-width:520px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.cart-review-scroll{overflow-y:auto;flex:1;min-height:0;scrollbar-width:none;-ms-overflow-style:none}
+.cart-review-scroll::-webkit-scrollbar{display:none}
 .cart-review-footer{padding:14px 20px 28px;background:#fff;border-top:1px solid var(--border);flex-shrink:0}
 .cr-item{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border)}
 .cr-item:last-child{border-bottom:none}
@@ -528,6 +549,15 @@ body{background:var(--bg);min-height:100vh}
 .google-btn:active{background:#f0f0f0}
 .google-btn:disabled{opacity:.6;cursor:default}
 
+/* ── SAVED ADDRESSES ── */
+.saved-addr-section{margin-bottom:12px}
+.saved-addr-section h5{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.saved-addr-chips{display:flex;flex-wrap:wrap;gap:8px}
+.saved-addr-chip{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:all .15s;font-family:inherit}
+.saved-addr-chip:hover{border-color:var(--red);background:#fff5f7;color:var(--red)}
+[data-theme="dark"] .saved-addr-chip{background:#2a2a2d;border-color:var(--border);color:var(--text)}
+[data-theme="dark"] .saved-addr-chip:hover{border-color:var(--red);background:#3a0008}
+
 /* ── LGPD BANNER ── */
 #lgpd-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#fff;border-top:1px solid #e5e7eb;box-shadow:0 -8px 32px rgba(0,0,0,.12);padding:16px 20px;transform:translateY(100%);transition:transform .4s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 #lgpd-banner.show{transform:translateY(0)}
@@ -568,7 +598,7 @@ body{background:var(--bg);min-height:100vh}
 [data-theme="dark"]{--bg:#111;--card:#222224;--text:#f0f0f0;--muted:#9499a0;--border:#333336;color-scheme:dark}
 
 /* Superfícies principais */
-[data-theme="dark"] .outer,[data-theme="dark"] .cats-mobile,
+[data-theme="dark"] .outer,
 [data-theme="dark"] .promo-banners,[data-theme="dark"] .search-wrap{background:var(--card)}
 [data-theme="dark"] .items{background:var(--card);border-color:var(--border)}
 [data-theme="dark"] .item{background:var(--card)}
@@ -677,10 +707,13 @@ body{background:var(--bg);min-height:100vh}
   <button class="hamburger-btn" id="hamburger-btn" onclick="openDrawer()" aria-label="Abrir menu">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
+  <button class="search-icon-btn" id="search-icon-btn" onclick="toggleSearchPopup()" aria-label="Buscar" style="display:flex">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </button>
   <div class="logo">天信</div>
   <div class="header-info">
     <h1>Tenshin 天信</h1>
-    <span><span class="open-dot"></span> Aberto agora · Entrega ~35 min</span>
+    <span><span class="open-dot"></span> Aberto agora · Entrega <span id="header-entrega-tempo">30-45 min</span></span>
   </div>
   <div class="header-search-wrap">
     <div class="header-search">
@@ -690,6 +723,15 @@ body{background:var(--bg);min-height:100vh}
   </div>
   <div class="header-auth" id="header-auth">
     <button class="btn-login" onclick="showLogin()">Entrar</button>
+  </div>
+</div>
+
+<!-- SEARCH POPUP (mobile) -->
+<div class="search-bar-popup" id="search-bar-popup">
+  <div class="search-bar-popup-inner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="search-popup-input" placeholder="Buscar no cardápio..." oninput="filterItems(this.value)" autocomplete="off">
+    <button onclick="closeSearchPopup()" aria-label="Fechar busca" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:0;line-height:1;flex-shrink:0">✕</button>
   </div>
 </div>
 
@@ -732,6 +774,14 @@ body{background:var(--bg);min-height:100vh}
       <div class="drawer-item-thumb"><img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=76&h=76&fit=crop&q=80" alt="" onerror="this.style.display='none'"></div>
       <span>Bebidas</span>
     </div>
+    <div class="drawer-item" id="drawer-quente" onclick="filterCatDrawer('quente',this)">
+      <div class="drawer-item-thumb"><img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=76&h=76&fit=crop&q=80" alt="" onerror="this.style.display='none'"></div>
+      <span>Pratos Quentes</span>
+    </div>
+    <div class="drawer-item" id="drawer-sobremesa" onclick="filterCatDrawer('sobremesa',this)">
+      <div class="drawer-item-thumb"><img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=76&h=76&fit=crop&q=80" alt="" onerror="this.style.display='none'"></div>
+      <span>Sobremesas</span>
+    </div>
   </div>
   <div class="drawer-divider"></div>
   <button class="drawer-theme-btn" id="drawer-theme-btn" onclick="toggleTheme()">
@@ -760,8 +810,8 @@ body{background:var(--bg);min-height:100vh}
       <div class="promo-card-grad" style="background:linear-gradient(90deg,#6b0010 30%,rgba(107,0,16,.1) 100%)"></div>
       <div class="promo-card-content">
         <div class="promo-logo">Tenshin · Promoção</div>
-        <div class="promo-title">Combinados<br>com desconto</div>
-        <div class="promo-sub">pra compartilhar<br>com a família</div>
+        <div class="promo-title">Combinados<br>especiais</div>
+        <div class="promo-sub">sushi · temaki<br>hot roll e muito mais</div>
         <span class="promo-pill">VER OFERTAS</span>
       </div>
     </div>
@@ -773,7 +823,7 @@ body{background:var(--bg);min-height:100vh}
       <div class="promo-card-content">
         <div class="promo-logo">Tenshin · Todos os dias</div>
         <div class="promo-title">Rodízio<br>Tenshin</div>
-        <div class="promo-sub">coma à vontade<br>a partir de R$ 89,90</div>
+        <div class="promo-sub">+30 opções · à vontade<br>a partir de R$ 89,90</div>
         <span class="promo-pill">PEDIR AGORA</span>
       </div>
     </div>
@@ -785,7 +835,7 @@ body{background:var(--bg);min-height:100vh}
       <div class="promo-card-content">
         <div class="promo-logo">Tenshin · Especialidade</div>
         <div class="promo-title">Temaki<br>Hot</div>
-        <div class="promo-sub">quentinho e<br>irresistível</div>
+        <div class="promo-sub">crocante por fora<br>cremoso por dentro</div>
         <span class="promo-pill">VER TEMAKIS</span>
       </div>
     </div>
@@ -797,57 +847,23 @@ body{background:var(--bg);min-height:100vh}
       <div class="promo-card-content">
         <div class="promo-logo">Tenshin · PIX</div>
         <div class="promo-title">5% OFF<br>no PIX</div>
-        <div class="promo-sub">desconto em<br>todo o cardápio</div>
+        <div class="promo-sub">pague com PIX<br>e economize na hora</div>
         <span class="promo-pill">APROVEITE</span>
       </div>
     </div>
 
   </div>
 
-  <!-- CATEGORIES — quadradinhos estilo iFood -->
-  <div class="cats-mobile" id="cats">
-    <button class="cat active" onclick="filterCat('todos',this)">
-      <div class="cat-icon-wrap">
-        <img src="https://images.unsplash.com/photo-1562802378-063ec186a863?w=128&h=128&fit=crop&q=80" alt="Todos" onerror="this.style.display='none'">
-      </div>
-      <span class="cat-label">Todos</span>
-    </button>
-    <button class="cat" onclick="filterCat('promocao',this)">
-      <div class="cat-icon-wrap">
-        <img src="https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=128&h=128&fit=crop&q=80" alt="Promoções" onerror="this.style.display='none'">
-      </div>
-      <span class="cat-label">Promoções</span>
-    </button>
-    <button class="cat" onclick="filterCat('sushi',this)">
-      <div class="cat-icon-wrap">
-        <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=128&h=128&fit=crop&q=80" alt="Sushi" onerror="this.style.display='none'">
-      </div>
-      <span class="cat-label">Sushi</span>
-    </button>
-    <button class="cat" onclick="filterCat('sashimi',this)">
-      <div class="cat-icon-wrap">
-        <img src="https://images.unsplash.com/photo-1534482421-64566f976cfa?w=128&h=128&fit=crop&q=80" alt="Sashimi" onerror="this.style.display='none'">
-      </div>
-      <span class="cat-label">Sashimi</span>
-    </button>
-    <button class="cat" onclick="filterCat('temaki',this)">
-      <div class="cat-icon-wrap">
-        <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=128&h=128&fit=crop&q=80" alt="Temaki" onerror="this.style.display='none'">
-      </div>
-      <span class="cat-label">Temaki</span>
-    </button>
-    <button class="cat" onclick="filterCat('combinado',this)">
-      <div class="cat-icon-wrap">
-        <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=128&h=128&fit=crop&q=80" alt="Combinados" onerror="this.style.display='none'">
-      </div>
-      <span class="cat-label">Combinados</span>
-    </button>
-    <button class="cat" onclick="filterCat('bebida',this)">
-      <div class="cat-icon-wrap">
-        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=128&h=128&fit=crop&q=80" alt="Bebidas" onerror="this.style.display='none'">
-      </div>
-      <span class="cat-label">Bebidas</span>
-    </button>
+  <!-- CATEGORIES — visível apenas no drawer (mobile) e sidebar (desktop) -->
+  <!-- A grade de categorias mobile foi removida; use o menu hambúrguer -->
+  <div class="cats-mobile" id="cats" style="display:none">
+    <button class="cat active" onclick="filterCat('todos',this)"><span class="cat-label">Todos</span></button>
+    <button class="cat" onclick="filterCat('promocao',this)"><span class="cat-label">Promoções</span></button>
+    <button class="cat" onclick="filterCat('sushi',this)"><span class="cat-label">Sushi</span></button>
+    <button class="cat" onclick="filterCat('sashimi',this)"><span class="cat-label">Sashimi</span></button>
+    <button class="cat" onclick="filterCat('temaki',this)"><span class="cat-label">Temaki</span></button>
+    <button class="cat" onclick="filterCat('combinado',this)"><span class="cat-label">Combinados</span></button>
+    <button class="cat" onclick="filterCat('bebida',this)"><span class="cat-label">Bebidas</span></button>
   </div>
 
   <div class="page-layout">
@@ -874,302 +890,17 @@ body{background:var(--bg);min-height:100vh}
         <div class="banner-content">
           <div class="promo-logo">Tenshin · Todos os dias</div>
           <h3>Rodízio Tenshin</h3>
-          <p>Coma à vontade · A partir de R$ 89,90</p>
+          <p>+30 opções · sobremesa inclusa · R$ 89,90</p>
           <span class="promo-pill" style="margin-top:8px">PEDIR AGORA</span>
         </div>
       </div>
 
-      <!-- MAIS PEDIDOS -->
-      <div class="section-label" id="label-promocao">Mais Pedidos</div>
-      <div class="items" id="items-promocao">
-
-        <div class="item" data-cat="promocao" onclick="openItem({nome:'Tenshin A — 40 peças',desc:'Combinado especial com 40 peças variadas. Sushi, temaki, hot roll e skin. Para 2 pessoas.',emoji:'🍣',preco:89.90,cat:'promocao',badge:'TOP'})">
-          <div class="item-img">🍣<div class="item-badge">TOP</div></div>
-          <div class="item-body">
-            <div class="item-name">Tenshin A — 40 peças</div>
-            <div class="item-desc">Sushi · Temaki · Hot Roll · Skin</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 89,90</div>
-              <div class="item-qty zero" data-nome="Tenshin A — 40 peças" data-preco="89.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Tenshin A — 40 peças',89.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Tenshin A — 40 peças',89.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="promocao" onclick="openItem({nome:'Tenshin B — 30 peças',desc:'30 peças da nossa seleção especial. Salmão, atum, tilápia e cream cheese.',emoji:'🍱',preco:69.90,cat:'promocao',badge:'TOP'})">
-          <div class="item-img">🍱<div class="item-badge">TOP</div></div>
-          <div class="item-body">
-            <div class="item-name">Tenshin B — 30 peças</div>
-            <div class="item-desc">Salmão · Atum · Cream Cheese</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 69,90</div>
-              <div class="item-qty zero" data-nome="Tenshin B — 30 peças" data-preco="69.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Tenshin B — 30 peças',69.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Tenshin B — 30 peças',69.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="promocao" onclick="openItem({nome:'Tenshin C — 20 peças',desc:'Perfeito para uma pessoa. 20 peças selecionadas com os clássicos da casa.',emoji:'🥡',preco:49.90,cat:'promocao'})">
-          <div class="item-img">🥡</div>
-          <div class="item-body">
-            <div class="item-name">Tenshin C — 20 peças</div>
-            <div class="item-desc">Clássicos · Para 1 pessoa</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 49,90</div>
-              <div class="item-qty zero" data-nome="Tenshin C — 20 peças" data-preco="49.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Tenshin C — 20 peças',49.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Tenshin C — 20 peças',49.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <!-- Cardápio carregado dinamicamente do Firestore -->
+      <div id="cardapio-loading" style="text-align:center;padding:60px 20px;color:var(--muted)">
+        <div style="font-size:32px;margin-bottom:12px">🍣</div>
+        <div style="font-size:14px">Carregando cardápio...</div>
       </div>
-
-      <!-- SUSHI -->
-      <div class="section-label" id="label-sushi">Sushi</div>
-      <div class="items" id="items-sushi">
-
-        <div class="item" data-cat="sushi" onclick="openItem({nome:'Sushi Salmão',desc:'Peça de sushi com salmão fresco e arroz temperado. Acompanha shoyu e wasabi.',emoji:'🍣',preco:6.90,cat:'sushi'})">
-          <div class="item-img">🍣</div>
-          <div class="item-body">
-            <div class="item-name">Sushi Salmão</div>
-            <div class="item-desc">Salmão fresco · Arroz temperado</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 6,90 / un</div>
-              <div class="item-qty zero" data-nome="Sushi Salmão" data-preco="6.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Sushi Salmão',6.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Sushi Salmão',6.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="sushi" onclick="openItem({nome:'Sushi Atum',desc:'Peça de sushi com atum fresco. Rico em ômega 3.',emoji:'🎣',preco:7.50,cat:'sushi'})">
-          <div class="item-img">🎣</div>
-          <div class="item-body">
-            <div class="item-name">Sushi Atum</div>
-            <div class="item-desc">Atum fresco · Rico em ômega 3</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 7,50 / un</div>
-              <div class="item-qty zero" data-nome="Sushi Atum" data-preco="7.50">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Sushi Atum',7.50,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Sushi Atum',7.50,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="sushi" onclick="openItem({nome:'Hot Roll Salmão',desc:'Sushi empanado e frito com recheio de salmão e cream cheese. Servido com molho especial.',emoji:'🔥',preco:8.90,cat:'sushi',badge:'HOT'})">
-          <div class="item-img">🔥<div class="item-badge">HOT</div></div>
-          <div class="item-body">
-            <div class="item-name">Hot Roll Salmão</div>
-            <div class="item-desc">Empanado · Cream Cheese</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 8,90 / un</div>
-              <div class="item-qty zero" data-nome="Hot Roll Salmão" data-preco="8.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Hot Roll Salmão',8.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Hot Roll Salmão',8.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- TEMAKI -->
-      <!-- SASHIMI -->
-      <div class="section-label" id="label-sashimi">Sashimi</div>
-      <div class="items" id="items-sashimi">
-
-        <div class="item" data-cat="sashimi" onclick="openItem({nome:'Sashimi Salmão',desc:'Fatias frescas de salmão cortadas na hora. Acompanha shoyu, wasabi e gengibre.',emoji:'🐟',preco:8.90,cat:'sashimi'})">
-          <div class="item-img">🐟</div>
-          <div class="item-body">
-            <div class="item-name">Sashimi Salmão</div>
-            <div class="item-desc">Salmão fresco · Shoyu · Wasabi</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 8,90 / un</div>
-              <div class="item-qty zero" data-nome="Sashimi Salmão" data-preco="8.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Sashimi Salmão',8.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Sashimi Salmão',8.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="sashimi" onclick="openItem({nome:'Sashimi Atum',desc:'Fatias de atum fresco premium. Rico em ômega 3 e proteínas.',emoji:'🎣',preco:9.50,cat:'sashimi'})">
-          <div class="item-img">🎣</div>
-          <div class="item-body">
-            <div class="item-name">Sashimi Atum</div>
-            <div class="item-desc">Atum premium · Shoyu · Gengibre</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 9,50 / un</div>
-              <div class="item-qty zero" data-nome="Sashimi Atum" data-preco="9.50">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Sashimi Atum',9.50,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Sashimi Atum',9.50,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="sashimi" onclick="openItem({nome:'Sashimi Mix — 12 fatias',desc:'Seleção de 12 fatias variadas: salmão, atum e tilápia. Perfeito para experimentar.',emoji:'🍱',preco:39.90,cat:'sashimi',badge:'MIX'})">
-          <div class="item-img">🍱<div class="item-badge">MIX</div></div>
-          <div class="item-body">
-            <div class="item-name">Sashimi Mix — 12 fatias</div>
-            <div class="item-desc">Salmão · Atum · Tilápia</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 39,90</div>
-              <div class="item-qty zero" data-nome="Sashimi Mix — 12 fatias" data-preco="39.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Sashimi Mix — 12 fatias',39.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Sashimi Mix — 12 fatias',39.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="section-label" id="label-temaki">Temaki</div>
-      <div class="items" id="items-temaki">
-
-        <div class="item" data-cat="temaki" onclick="openItem({nome:'Temaki Salmão',desc:'Cone de alga com arroz, salmão fresco e cream cheese. O clássico que não tem erro.',emoji:'🌯',preco:19.90,cat:'temaki'})">
-          <div class="item-img">🌯</div>
-          <div class="item-body">
-            <div class="item-name">Temaki Salmão</div>
-            <div class="item-desc">Salmão · Cream Cheese · Alga</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 19,90</div>
-              <div class="item-qty zero" data-nome="Temaki Salmão" data-preco="19.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Temaki Salmão',19.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Temaki Salmão',19.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="temaki" onclick="openItem({nome:'Temaki Hot',desc:'Cone de alga com salmão, cream cheese e empanado frito. Servido quente.',emoji:'🌶️',preco:22.90,cat:'temaki',badge:'HOT'})">
-          <div class="item-img">🌶️<div class="item-badge">HOT</div></div>
-          <div class="item-body">
-            <div class="item-name">Temaki Hot</div>
-            <div class="item-desc">Frito · Salmão · Cream Cheese</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 22,90</div>
-              <div class="item-qty zero" data-nome="Temaki Hot" data-preco="22.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Temaki Hot',22.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Temaki Hot',22.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- COMBINADOS -->
-      <div class="section-label" id="label-combinado">Combinados</div>
-      <div class="items" id="items-combinado">
-
-        <div class="item" data-cat="combinado" onclick="openItem({nome:'Combinado Tenshin D — 50 peças',desc:'O nosso maior combinado! 50 peças variadas com sushi, sashimi, temaki e hot roll. Para 3 pessoas.',emoji:'🍱',preco:119.90,cat:'combinado',badge:'TOP'})">
-          <div class="item-img">🍱<div class="item-badge">TOP</div></div>
-          <div class="item-body">
-            <div class="item-name">Combinado D — 50 peças</div>
-            <div class="item-desc">Sushi · Sashimi · Temaki · Hot Roll</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 119,90</div>
-              <div class="item-qty zero" data-nome="Combinado Tenshin D — 50 peças" data-preco="119.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Combinado Tenshin D — 50 peças',119.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Combinado Tenshin D — 50 peças',119.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="combinado" onclick="openItem({nome:'Combinado Família — 80 peças',desc:'Ideal para a família! 80 peças com toda a variedade do cardápio Tenshin. Para 4 ou mais pessoas.',emoji:'🎎',preco:179.90,cat:'combinado',badge:'FAM'})">
-          <div class="item-img">🎎<div class="item-badge">FAM</div></div>
-          <div class="item-body">
-            <div class="item-name">Combinado Família — 80 peças</div>
-            <div class="item-desc">Variedade completa · Para 4+ pessoas</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 179,90</div>
-              <div class="item-qty zero" data-nome="Combinado Família — 80 peças" data-preco="179.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Combinado Família — 80 peças',179.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Combinado Família — 80 peças',179.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="combinado" onclick="openItem({nome:'Combinado Individual — 15 peças',desc:'Perfeito para uma pessoa com vontade de experimentar. 15 peças selecionadas pelos nossos chefs.',emoji:'🥡',preco:34.90,cat:'combinado'})">
-          <div class="item-img">🥡</div>
-          <div class="item-body">
-            <div class="item-name">Combinado Individual — 15 peças</div>
-            <div class="item-desc">Seleção dos chefs · Para 1 pessoa</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 34,90</div>
-              <div class="item-qty zero" data-nome="Combinado Individual — 15 peças" data-preco="34.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Combinado Individual — 15 peças',34.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Combinado Individual — 15 peças',34.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- BEBIDAS -->
-      <div class="section-label" id="label-bebida">Bebidas</div>
-      <div class="items" id="items-bebida">
-
-        <div class="item" data-cat="bebida" onclick="openItem({nome:'Suco de Maracujá',desc:'Suco natural gelado de maracujá. 500ml.',emoji:'🥤',preco:9.90,cat:'bebida'})">
-          <div class="item-img">🥤</div>
-          <div class="item-body">
-            <div class="item-name">Suco de Maracujá</div>
-            <div class="item-desc">Natural gelado · 500ml</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 9,90</div>
-              <div class="item-qty zero" data-nome="Suco de Maracujá" data-preco="9.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Suco de Maracujá',9.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Suco de Maracujá',9.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item" data-cat="bebida" onclick="openItem({nome:'Refrigerante Lata',desc:'Coca-Cola, Guaraná ou Sprite. 350ml gelada.',emoji:'🥫',preco:6.90,cat:'bebida'})">
-          <div class="item-img">🥫</div>
-          <div class="item-body">
-            <div class="item-name">Refrigerante Lata</div>
-            <div class="item-desc">Coca · Guaraná · Sprite · 350ml</div>
-            <div class="item-foot">
-              <div class="item-price">R$ 6,90</div>
-              <div class="item-qty zero" data-nome="Refrigerante Lata" data-preco="6.90">
-                <button class="qty-minus" onclick="event.stopPropagation();adjustItem('Refrigerante Lata',6.90,-1)">−</button>
-                <span class="qty-num">0</span>
-                <button class="qty-plus" onclick="event.stopPropagation();adjustItem('Refrigerante Lata',6.90,1)">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <div id="cardapio-content"></div>
 
     </div><!-- /items-area -->
   </div><!-- /page-layout -->
@@ -1254,7 +985,7 @@ body{background:var(--bg);min-height:100vh}
     </div>
     <div class="cart-review-footer" id="cr-footer">
       <div class="total-row"><span>Subtotal</span><span id="cr-sub">R$ 0,00</span></div>
-      <div class="total-row"><span>Entrega estimada</span><span>R$ 5,00</span></div>
+      <div class="total-row"><span>Entrega estimada</span><span id="cr-entrega-row">R$ 5,00</span></div>
       <div class="total-row main"><span>Total</span><span id="cr-total">R$ 0,00</span></div>
       <button class="cr-checkout-btn" id="cr-checkout-btn" onclick="closeCartReview();openCheckout()">Finalizar Pedido →</button>
     </div>
@@ -1319,6 +1050,10 @@ body{background:var(--bg);min-height:100vh}
           <button class="type-btn sel" onclick="selType(this,'delivery')"><span>🛵</span>Delivery</button>
           <button class="type-btn" onclick="selType(this,'retirada')"><span>🏪</span>Retirada</button>
         </div>
+        <div id="saved-addr-section" class="saved-addr-section" style="display:none">
+          <h5>Endereços salvos</h5>
+          <div class="saved-addr-chips" id="saved-addr-chips"></div>
+        </div>
         <div id="addr-fields">
           <label class="field-label">Rua e número <span class="req">*</span></label>
           <input class="field" placeholder="Ex: Rua das Flores, 123" id="addr-rua">
@@ -1333,11 +1068,11 @@ body{background:var(--bg);min-height:100vh}
         <h4>Pagamento</h4>
         <div class="pay-opts">
           <label class="pay-opt sel">
-            <span class="pay-opt-icon">⚡</span> PIX (5% off)
+            <span class="pay-opt-icon">⚡</span> PIX
             <input type="radio" name="pay" value="pix" checked>
           </label>
           <label class="pay-opt">
-            <span class="pay-opt-icon">💳</span> Cartão na entrega
+            <span class="pay-opt-icon">💳</span> <span id="cartao-label">Cartão na entrega</span>
             <input type="radio" name="pay" value="cartao">
           </label>
           <label class="pay-opt">
@@ -1348,7 +1083,7 @@ body{background:var(--bg);min-height:100vh}
       </div>
       <div class="divider"></div>
       <div class="total-row"><span>Subtotal</span><span id="sub-val">R$ 0,00</span></div>
-      <div class="total-row"><span>Entrega</span><span>R$ 5,00</span></div>
+      <div class="total-row"><span>Entrega</span><span id="checkout-entrega-row">R$ 5,00</span></div>
       <div class="total-row main"><span>Total</span><span id="tot-val">R$ 0,00</span></div>
     </div>
     <!-- botão fixo no rodapé -->
@@ -1412,12 +1147,39 @@ const db   = firebase.firestore();
 
 let cart = [];
 let orders = [];
-let orderCounter = 1000;
 let currentItem = null;
 let modalQty = 1;
 let loggedIn = false;
 let currentUser = null;
 let pendingAction = null;
+let currentTipo = 'delivery';
+let TEMPO_ENTREGA = '30-45 min';
+let ordersUnsubscribeListener = null;
+
+function getEntregaFee() {
+  return currentTipo === 'delivery' ? 5 : 0;
+}
+
+function updateHeaderEntregaTempo() {
+  const el = document.getElementById('header-entrega-tempo');
+  if (el) el.textContent = window.TEMPO_ENTREGA || TEMPO_ENTREGA;
+}
+
+// Lê tempo de entrega do Firestore config
+function loadTempoEntrega() {
+  db.collection('config').doc('tenshin').get().then(doc => {
+    if (doc.exists && doc.data().tempoEntrega) {
+      TEMPO_ENTREGA = doc.data().tempoEntrega;
+      window.TEMPO_ENTREGA = TEMPO_ENTREGA;
+      updateHeaderEntregaTempo();
+    }
+  }).catch(e => console.warn('Erro ao carregar config:', e));
+}
+
+// Gera ID único de pedido legível
+function generateOrderId() {
+  return 'T' + Date.now().toString(36).toUpperCase().slice(-6);
+}
 
 /* ---- LOGIN ---- */
 function showLogin(action) {
@@ -1496,6 +1258,9 @@ auth.onAuthStateChanged(user => {
   loggedIn = !!user;
   currentUser = user;
   renderHeaderAuth();
+  if (user && location.hash === '#pedidos') {
+    showOrders();
+  }
 });
 
 
@@ -1634,9 +1399,12 @@ function closeCartReview() {
 function renderCartReview() {
   const count = cart.reduce((s, i) => s + i.qty, 0);
   const sub   = cart.reduce((s, i) => s + i.preco * i.qty, 0);
+  const fee = getEntregaFee();
   document.getElementById('cr-count-badge').textContent = count;
   document.getElementById('cr-sub').textContent   = 'R$ ' + sub.toFixed(2).replace('.', ',');
-  document.getElementById('cr-total').textContent = 'R$ ' + (sub + 5).toFixed(2).replace('.', ',');
+  document.getElementById('cr-total').textContent = 'R$ ' + (sub + fee).toFixed(2).replace('.', ',');
+  const crEntregaEl = document.getElementById('cr-entrega-row');
+  if (crEntregaEl) crEntregaEl.textContent = fee === 0 ? 'Grátis' : 'R$ ' + fee.toFixed(2).replace('.',',');
 
   if (cart.length === 0) { closeCartReview(); return; }
 
@@ -1711,8 +1479,13 @@ function openCheckout() {
     const items = document.getElementById('checkout-items');
     items.innerHTML = cart.map(i => `<div class="checkout-item"><span>${i.qty}x ${i.nome}</span><span>R$ ${(i.preco*i.qty).toFixed(2).replace('.',',')}</span></div>`).join('');
     const sub = cart.reduce((s,i) => s + i.preco*i.qty, 0);
+    const fee = getEntregaFee();
     document.getElementById('sub-val').textContent = 'R$ ' + sub.toFixed(2).replace('.',',');
-    document.getElementById('tot-val').textContent = 'R$ ' + (sub+5).toFixed(2).replace('.',',');
+    document.getElementById('tot-val').textContent = 'R$ ' + (sub+fee).toFixed(2).replace('.',',');
+    const entregaRowEl = document.getElementById('checkout-entrega-row');
+    if (entregaRowEl) entregaRowEl.textContent = fee === 0 ? 'Grátis' : 'R$ ' + fee.toFixed(2).replace('.',',');
+    // Carrega endereços salvos se logado e delivery
+    if (loggedIn && currentTipo === 'delivery') loadSavedAddresses();
     // Pré-preenche nome do Google
     if (currentUser?.displayName) {
       const nomeField = document.getElementById('checkout-nome');
@@ -1729,9 +1502,25 @@ function closeCheckout(e) {
 function closeCheckoutDirect() { document.getElementById('checkout-overlay').classList.remove('open'); }
 
 function selType(btn, type) {
+  currentTipo = type;
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
   document.getElementById('addr-fields').style.display = type === 'delivery' ? 'block' : 'none';
+  // Ajusta label do cartão conforme o tipo
+  const cartaoLabel = document.getElementById('cartao-label');
+  if (cartaoLabel) cartaoLabel.textContent = type === 'delivery' ? 'Cartão na entrega' : 'Cartão na retirada';
+  // Mostra/esconde endereços salvos
+  const savedSection = document.getElementById('saved-addr-section');
+  if (savedSection) savedSection.style.display = (loggedIn && type === 'delivery') ? 'block' : 'none';
+  // Atualiza totais na tela
+  const sub = cart.reduce((s,i) => s + i.preco*i.qty, 0);
+  const fee = getEntregaFee();
+  const subValEl = document.getElementById('sub-val');
+  const totValEl = document.getElementById('tot-val');
+  const entregaRowEl = document.getElementById('checkout-entrega-row');
+  if (subValEl) subValEl.textContent = 'R$ ' + sub.toFixed(2).replace('.',',');
+  if (totValEl) totValEl.textContent = 'R$ ' + (sub + fee).toFixed(2).replace('.',',');
+  if (entregaRowEl) entregaRowEl.textContent = fee === 0 ? 'Grátis' : 'R$ ' + fee.toFixed(2).replace('.',',');
 }
 
 function confirmOrder() {
@@ -1765,15 +1554,16 @@ function confirmOrder() {
   }
 
   const payEl  = document.querySelector('.pay-opt.sel input');
-  const payMap = {pix:'PIX (5% off)', cartao:'Cartão na entrega', dinheiro:'Dinheiro'};
+  const cartaoStr = isDelivery ? 'Cartão na entrega' : 'Cartão na retirada';
+  const payMap = {pix:'PIX', cartao: cartaoStr, dinheiro:'Dinheiro'};
   const sub    = cart.reduce((s,i) => s + i.preco*i.qty, 0);
-  const total  = sub + 5;
+  const total  = sub + getEntregaFee();
   const now    = new Date();
   const pad    = n => String(n).padStart(2,'0');
   const dataStr = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
   const orderData = {
-    id: ++orderCounter,
+    id: generateOrderId(),
     data: dataStr,
     itens: [...cart],
     subtotal: sub,
@@ -1787,56 +1577,80 @@ function confirmOrder() {
   showPayConfirm(orderData, total);
 }
 
-// limpa erro individual ao digitar
+// limpa erro individual ao digitar; verifica hash; carrega config
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('#checkout-modal .field').forEach(f => {
     f.addEventListener('input', () => f.classList.remove('error'));
   });
+  // Verifica hash ao recarregar
+  if (location.hash === '#pedidos') {
+    auth.onAuthStateChanged(function checkHash(user) {
+      if (user) { showOrders(); }
+      auth.onAuthStateChanged(() => {}); // remove este handler uma vez
+    });
+  }
+  // Carrega tempo de entrega do Firestore
+  loadTempoEntrega();
+  updateHeaderEntregaTempo();
+  // Inicia listener do cardápio dinâmico
+  startCardapioListener();
 });
 
 async function showOrders() {
+  history.replaceState({tenshin:true}, '', '#pedidos');
   document.getElementById('orders-overlay').classList.add('open');
+  // Cancela listener anterior se existir
+  if (ordersUnsubscribeListener) { ordersUnsubscribeListener(); ordersUnsubscribeListener = null; }
   if (!loggedIn || !currentUser) { renderOrders(); return; }
   const body = document.getElementById('orders-body');
   body.innerHTML = `<div style="text-align:center;padding:60px 20px;color:var(--muted)"><div style="font-size:36px;margin-bottom:12px">⏳</div>Carregando pedidos...</div>`;
-  try {
-    const snap = await db.collection('pedidos')
-      .where('userId','==', currentUser.uid)
-      .get();
-    const firestoreOrders = snap.docs
-      .map(d => d.data())
-      .sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
-    if (firestoreOrders.length === 0) {
-      body.innerHTML = `<div class="orders-empty"><div class="orders-empty-icon">📋</div><h3>Nenhum pedido ainda</h3><p>Seus pedidos confirmados aparecerão aqui.</p></div>`;
-      return;
-    }
-    const statusLabel = {preparando:'Preparando', caminho:'A caminho', entregue:'Entregue'};
-    const statusClass = {preparando:'status-preparando', caminho:'status-caminho', entregue:'status-entregue'};
-    body.innerHTML = firestoreOrders.map(o => `
-      <div class="order-card">
-        <div class="order-card-head">
-          <div>
-            <div class="order-num">Pedido #${o.id}</div>
-            <div class="order-date">${o.data}</div>
+
+  const statusLabel = {preparando:'Preparando', caminho:'A caminho', entregue:'Entregue'};
+  const statusClass = {preparando:'status-preparando', caminho:'status-caminho', entregue:'status-entregue'};
+
+  ordersUnsubscribeListener = db.collection('pedidos')
+    .where('userId','==', currentUser.uid)
+    .onSnapshot(snap => {
+      const firestoreOrders = snap.docs
+        .map(d => d.data())
+        .sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+      if (firestoreOrders.length === 0) {
+        body.innerHTML = `<div class="orders-empty"><div class="orders-empty-icon">📋</div><h3>Nenhum pedido ainda</h3><p>Seus pedidos confirmados aparecerão aqui.</p></div>`;
+        return;
+      }
+      body.innerHTML = firestoreOrders.map(o => {
+        const tempoHtml = (o.status === 'preparando' || o.status === 'caminho')
+          ? `<div class="order-date" style="margin-top:4px">⏱ Tempo estimado: ${TEMPO_ENTREGA}</div>`
+          : '';
+        return `
+        <div class="order-card">
+          <div class="order-card-head">
+            <div>
+              <div class="order-num">Pedido #${o.id}</div>
+              <div class="order-date">${o.data}</div>
+              ${tempoHtml}
+            </div>
+            <span class="order-status ${statusClass[o.status]||'status-preparando'}">${statusLabel[o.status]||'👨‍🍳 Preparando'}</span>
           </div>
-          <span class="order-status ${statusClass[o.status]||'status-preparando'}">${statusLabel[o.status]||'👨‍🍳 Preparando'}</span>
-        </div>
-        <div class="order-items-list">
-          ${o.itens.map(i => `<div class="order-item-row"><span>${i.qty}x ${i.nome}</span><span>R$ ${(i.preco*i.qty).toFixed(2).replace('.',',')}</span></div>`).join('')}
-        </div>
-        <div class="order-footer">
-          <div class="order-meta">${o.tipo} · ${o.pagamento}</div>
-          <div class="order-total">R$ ${o.total.toFixed(2).replace('.',',')}</div>
-        </div>
-      </div>`).join('');
-  } catch(e) {
-    console.error(e);
-    renderOrders();
-  }
+          <div class="order-items-list">
+            ${(o.itens||[]).map(i => `<div class="order-item-row"><span>${i.qty}x ${i.nome}</span><span>R$ ${(i.preco*i.qty).toFixed(2).replace('.',',')}</span></div>`).join('')}
+          </div>
+          <div class="order-footer">
+            <div class="order-meta">${o.tipo} · ${o.pagamento}</div>
+            <div class="order-total">R$ ${(o.total||0).toFixed(2).replace('.',',')}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }, e => {
+      console.error(e);
+      renderOrders();
+    });
 }
 
 function closeOrders() {
   document.getElementById('orders-overlay').classList.remove('open');
+  if (ordersUnsubscribeListener) { ordersUnsubscribeListener(); ordersUnsubscribeListener = null; }
+  history.replaceState({tenshin:true}, '', '#');
 }
 
 function closeSuccessGoOrders() {
@@ -1946,6 +1760,72 @@ function filterItems(q) {
   if (banner) banner.style.display = q === '' ? 'flex' : 'none';
 }
 
+/* ---- SAVED ADDRESSES ---- */
+async function loadSavedAddresses() {
+  if (!loggedIn || !currentUser) return;
+  const section = document.getElementById('saved-addr-section');
+  const chips   = document.getElementById('saved-addr-chips');
+  if (!section || !chips) return;
+  try {
+    const snap = await db.collection('usuarios').doc(currentUser.uid).collection('enderecos').get();
+    if (snap.empty) { section.style.display = 'none'; return; }
+    const docs = snap.docs.map(d => ({id: d.id, ...d.data()}));
+    chips.innerHTML = docs.map(e => {
+      const icon = e.label === 'Trabalho' ? '💼' : '🏠';
+      const label = e.label || 'Endereço';
+      return `<button class="saved-addr-chip" onclick="fillAddress('${(e.rua||'').replace(/'/g,"\\'")}','${(e.bairro||'').replace(/'/g,"\\'")}','${(e.complemento||'').replace(/'/g,"\\'")}')">
+        ${icon} ${label}
+      </button>`;
+    }).join('');
+    section.style.display = 'block';
+  } catch(e) {
+    console.warn('Erro ao carregar endereços salvos:', e);
+    section.style.display = 'none';
+  }
+}
+
+function fillAddress(rua, bairro, complemento) {
+  const ruaEl   = document.getElementById('addr-rua');
+  const bairroEl = document.getElementById('addr-bairro');
+  const compEl  = document.getElementById('addr-comp');
+  if (ruaEl)    ruaEl.value    = rua;
+  if (bairroEl) bairroEl.value = bairro;
+  if (compEl)   compEl.value   = complemento;
+  [ruaEl, bairroEl].forEach(el => el && el.classList.remove('error'));
+}
+
+async function saveAddressIfNew(rua, bairro, complemento) {
+  if (!loggedIn || !currentUser || !rua || !bairro) return;
+  try {
+    const colRef = db.collection('usuarios').doc(currentUser.uid).collection('enderecos');
+    const snap = await colRef.get();
+    const exists = snap.docs.some(d => d.data().rua === rua && d.data().bairro === bairro);
+    if (!exists) {
+      await colRef.add({ rua, bairro, complemento: complemento || '', label: 'Casa', savedAt: firebase.firestore.FieldValue.serverTimestamp() });
+    }
+  } catch(e) { console.warn('Erro ao salvar endereço:', e); }
+}
+
+/* ---- SEARCH POPUP ---- */
+function toggleSearchPopup() {
+  const popup = document.getElementById('search-bar-popup');
+  const isOpen = popup.classList.contains('open');
+  if (isOpen) {
+    closeSearchPopup();
+  } else {
+    popup.classList.add('open');
+    const input = document.getElementById('search-popup-input');
+    if (input) { input.value = ''; filterItems(''); setTimeout(() => input.focus(), 100); }
+  }
+}
+
+function closeSearchPopup() {
+  const popup = document.getElementById('search-bar-popup');
+  popup.classList.remove('open');
+  const input = document.getElementById('search-popup-input');
+  if (input) { input.value = ''; filterItems(''); }
+}
+
 /* ---- PAYMENT OPTS ---- */
 document.querySelectorAll('.pay-opt').forEach(el => {
   el.addEventListener('click', () => {
@@ -2041,7 +1921,8 @@ function showPayConfirm(orderData, total) {
   const payEl  = document.querySelector('.pay-opt.sel input');
   const method = payEl?.value || 'pix';
   const icons  = {pix:'⚡', cartao:'💳', dinheiro:'💵'};
-  const labels = {pix:'via PIX (5% off)', cartao:'Cartão na entrega', dinheiro:'Dinheiro'};
+  const cartaoConfirmStr = (orderData.tipo === 'Delivery') ? 'Cartão na entrega' : 'Cartão na retirada';
+  const labels = {pix:'via PIX', cartao: cartaoConfirmStr, dinheiro:'Dinheiro'};
   document.getElementById('pay-confirm-icon').textContent   = icons[method]  || '⚡';
   document.getElementById('pay-confirm-method').textContent = labels[method] || 'via PIX';
   document.getElementById('pay-confirm-total').textContent  = 'R$ ' + total.toFixed(2).replace('.', ',');
@@ -2064,8 +1945,18 @@ async function placeOrder() {
         ...order,
         userId: currentUser.uid,
         userEmail: currentUser.email,
+        nomeCliente: order.nome,
+        formaPagamento: order.pagamento,
+        tipoEntrega: order.tipo,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
+      // Salva endereço se delivery
+      if (currentTipo === 'delivery') {
+        const rua    = document.getElementById('addr-rua')?.value?.trim() || '';
+        const bairro = document.getElementById('addr-bairro')?.value?.trim() || '';
+        const comp   = document.getElementById('addr-comp')?.value?.trim() || '';
+        saveAddressIfNew(rua, bairro, comp);
+      }
     } catch(e) { console.error('Erro ao salvar pedido:', e); }
   }
   orders.unshift(order);
@@ -2131,6 +2022,99 @@ async function placeOrder() {
   }
 })();
 
+/* ---- CARDÁPIO DO FIRESTORE ---- */
+const CAT_ORDER = {combinado:0, sushi:1, sashimi:2, temaki:3, quente:4, bebida:5, sobremesa:6};
+const CAT_NAMES = {
+  combinado:'Combinados', sushi:'Sushi', sashimi:'Sashimi',
+  temaki:'Temaki', quente:'Pratos Quentes', bebida:'Bebidas', sobremesa:'Sobremesas'
+};
+
+let cardapioListener = null;
+
+function startCardapioListener() {
+  if (cardapioListener) return;
+  cardapioListener = db.collection('cardapio')
+    .orderBy('createdAt', 'asc')
+    .onSnapshot(snap => {
+      if (snap.empty) {
+        seedCardapioIfEmpty();
+        return;
+      }
+      const prods = snap.docs.map(d => ({...d.data(), _docId: d.id}));
+      renderCardapioFromDB(prods);
+    }, err => {
+      console.error('Erro ao carregar cardápio:', err);
+      document.getElementById('cardapio-loading').innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">Erro ao carregar cardápio. Recarregue a página.</div>';
+    });
+}
+
+function renderCardapioFromDB(prods) {
+  document.getElementById('cardapio-loading').style.display = 'none';
+  const content = document.getElementById('cardapio-content');
+
+  // Agrupa por categoria
+  const byCategory = {};
+  prods.forEach(p => {
+    const cat = p.cat || 'sushi';
+    if (!byCategory[cat]) byCategory[cat] = [];
+    byCategory[cat].push(p);
+  });
+
+  // Ordena categorias
+  const sortedCats = Object.keys(byCategory).sort((a,b) => (CAT_ORDER[a]??9) - (CAT_ORDER[b]??9));
+
+  content.innerHTML = sortedCats.map(cat => {
+    const items = byCategory[cat];
+    const nome = CAT_NAMES[cat] || cat;
+    const itemsHtml = items.map(p => renderProdutoHTML(p)).join('');
+    return `
+      <div class="section-label" id="label-${cat}">${nome}</div>
+      <div class="items" id="items-${cat}">${itemsHtml}</div>`;
+  }).join('');
+
+  // Reinjecta imagens e restaura contadores do carrinho
+  injectDemoImages();
+  refreshAllCtrls();
+  updateDrawerCatVisibility();
+}
+
+function renderProdutoHTML(p) {
+  const nome   = (p.nome||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  const nomeJs = (p.nome||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  const descJs = (p.desc||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  const preco  = Number(p.preco||0).toFixed(2).replace('.', ',');
+  const badge  = p.badge ? `<div class="item-badge">${p.badge}</div>` : '';
+  const emoji  = p.emoji || '🍣';
+  const cat    = p.cat || 'sushi';
+  return `
+    <div class="item" data-cat="${cat}" onclick="openItem({nome:'${nomeJs}',desc:'${descJs}',emoji:'${emoji}',preco:${p.preco||0},cat:'${cat}',badge:'${p.badge||''}'})">
+      <div class="item-img">${emoji}${badge}</div>
+      <div class="item-body">
+        <div class="item-name">${p.nome||''}</div>
+        <div class="item-desc">${p.desc||''}</div>
+        <div class="item-foot">
+          <div class="item-price">R$ ${preco}</div>
+          <div class="item-qty zero" data-nome="${nome}" data-preco="${p.preco||0}">
+            <button class="qty-minus" onclick="event.stopPropagation();adjustItem('${nomeJs}',${p.preco||0},-1)">−</button>
+            <span class="qty-num">0</span>
+            <button class="qty-plus" onclick="event.stopPropagation();adjustItem('${nomeJs}',${p.preco||0},1)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function seedCardapioIfEmpty() { /* admin popula via painel */ }
+
+function updateDrawerCatVisibility() {
+  // Atualiza drawer para mostrar só categorias que têm produtos
+  const cats = ['combinado','sushi','sashimi','temaki','quente','bebida','sobremesa'];
+  cats.forEach(cat => {
+    const el = document.getElementById('drawer-' + cat);
+    if (el) el.style.display = document.getElementById('items-' + cat) ? '' : 'none';
+  });
+}
+
 /* ---- IMAGENS DEMO ---- */
 // Fotos representativas do Unsplash por categoria
 // Quando tiver as fotos reais do restaurante, substitua as URLs abaixo
@@ -2165,6 +2149,14 @@ const DEMO_IMGS = {
     'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&h=320&fit=crop&q=80',
     'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&h=320&fit=crop&q=80',
     'https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=500&h=320&fit=crop&q=80',
+  ],
+  'quente': [
+    'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&h=320&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1562802378-063ec186a863?w=500&h=320&fit=crop&q=80',
+  ],
+  'sobremesa': [
+    'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500&h=320&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=500&h=320&fit=crop&q=80',
   ],
 };
 

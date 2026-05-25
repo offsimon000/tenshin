@@ -585,6 +585,550 @@
     to   { background-position: -100% 0; }
   }
 
+  /* ── NAV PRINCIPAL (Pedidos / Cardápio) ── */
+  .main-nav {
+    display: flex;
+    gap: 2px;
+    padding: 14px 24px 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .main-nav-btn {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+    transition: all .15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .main-nav-btn:hover { color: var(--text); background: var(--bg); }
+
+  .main-nav-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: white;
+  }
+
+  .main-nav-badge {
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 1px 6px;
+    border-radius: 20px;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  /* ── VIEW TOGGLE ── */
+  #view-pedidos, #view-cardapio { display: block; }
+
+  /* ── CARDÁPIO: TOOLBAR ── */
+  .cardapio-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .cardapio-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .cat-filter-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+  }
+
+  .cat-filter-btn:hover { border-color: #aaa; color: var(--text); }
+
+  .cat-filter-btn.active {
+    background: var(--text);
+    border-color: var(--text);
+    color: white;
+  }
+
+  .btn-add-product {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+
+  .btn-add-product:hover { background: var(--accent2); }
+
+  /* ── PRODUTO TABLE ── */
+  .product-table {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .product-table-head {
+    display: grid;
+    grid-template-columns: 1fr 160px 100px 90px 110px;
+    gap: 0;
+    padding: 10px 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .product-row {
+    display: grid;
+    grid-template-columns: 1fr 160px 100px 90px 110px;
+    gap: 0;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: background .12s;
+  }
+
+  .product-row:last-child { border-bottom: none; }
+  .product-row:hover { background: #fafafa; }
+
+  .product-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .product-desc {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+  }
+
+  .product-cat-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #f3f4f6;
+    color: #374151;
+  }
+
+  .cat-badge-promocao  { background: #fef3c7; color: #92400e; }
+  .cat-badge-sushi     { background: #dbeafe; color: #1e40af; }
+  .cat-badge-sashimi   { background: #ede9fe; color: #5b21b6; }
+  .cat-badge-temaki    { background: #fce7f3; color: #9d174d; }
+  .cat-badge-combinado { background: #d1fae5; color: #065f46; }
+  .cat-badge-quente    { background: #ffedd5; color: #9a3412; }
+  .cat-badge-bebida    { background: #e0f2fe; color: #075985; }
+  .cat-badge-sobremesa { background: #fdf4ff; color: #7e22ce; }
+
+  .product-price {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .product-badge-label {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--accent);
+    color: white;
+    letter-spacing: .06em;
+    display: inline-block;
+  }
+
+  .product-actions {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+
+  .prod-btn {
+    padding: 6px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .12s;
+    color: var(--text);
+  }
+
+  .prod-btn:hover { background: #f3f4f6; }
+
+  .prod-btn.del {
+    border-color: #fecaca;
+    color: #b91c1c;
+  }
+
+  .prod-btn.del:hover { background: #fef2f2; }
+
+  /* ── MODAL PRODUTO ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 800;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal-card {
+    background: white;
+    border-radius: 18px;
+    width: 100%;
+    max-width: 520px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.25);
+    overflow: hidden;
+    animation: modalIn .25s cubic-bezier(.16,1,.3,1);
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(20px) scale(.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .modal-card-header {
+    background: #1a1a2e;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .modal-close-btn {
+    background: rgba(255,255,255,.1);
+    border: none;
+    color: rgba(255,255,255,.7);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s;
+  }
+
+  .modal-close-btn:hover { background: rgba(255,255,255,.2); }
+
+  .modal-card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  .form-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  .form-label .req { color: var(--accent); margin-left: 2px; }
+
+  .form-input, .form-select, .form-textarea {
+    padding: 11px 13px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    background: white;
+    outline: none;
+    transition: border .2s;
+    width: 100%;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--accent);
+  }
+
+  .form-input.error, .form-select.error { border-color: var(--accent); background: #fff5f5; }
+
+  .form-textarea { resize: vertical; min-height: 72px; }
+
+  .modal-card-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .btn-cancel {
+    padding: 11px 20px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--muted);
+    transition: all .15s;
+  }
+
+  .btn-cancel:hover { border-color: #aaa; color: var(--text); }
+
+  .btn-save {
+    padding: 11px 24px;
+    border-radius: 9px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+  }
+
+  .btn-save:hover { background: var(--accent2); }
+  .btn-save:disabled { opacity: .6; cursor: default; }
+
+  /* Modal de confirmação de exclusão */
+  .confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 900;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .confirm-overlay.open { display: flex; }
+
+  .confirm-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px 28px 22px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,.25);
+  }
+
+  .confirm-icon { font-size: 40px; margin-bottom: 10px; }
+  .confirm-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .confirm-sub { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+
+  .confirm-btns { display: flex; gap: 10px; justify-content: center; }
+
+  .btn-confirm-cancel {
+    padding: 10px 20px;
+    border-radius: 9px;
+    border: 1.5px solid var(--border);
+    background: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--muted);
+  }
+
+  .btn-confirm-del {
+    padding: 10px 20px;
+    border-radius: 9px;
+    border: none;
+    background: #dc2626;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+  }
+
+  .btn-confirm-del:hover { background: #b91c1c; }
+
+  /* ── DELIVERY TIME CONFIG ── */
+  .config-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .config-bar label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .config-bar input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text);
+    outline: none;
+    width: 140px;
+    transition: border .2s;
+  }
+
+  .config-bar input:focus { border-color: var(--accent); }
+
+  .config-bar button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+    white-space: nowrap;
+  }
+
+  .config-bar button:hover { background: var(--accent2); }
+
+  /* ── CLIENTS VIEW ── */
+  .clients-table {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .clients-table-head {
+    display: grid;
+    grid-template-columns: 1fr 90px 130px 90px;
+    gap: 0;
+    padding: 10px 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  .client-row {
+    display: grid;
+    grid-template-columns: 1fr 90px 130px 90px;
+    gap: 0;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: background .12s;
+  }
+
+  .client-row:last-child { border-bottom: none; }
+  .client-row:hover { background: #fafafa; }
+
+  .client-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .client-email {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .client-level {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .level-novo    { background: #f3f4f6; color: #374151; }
+  .level-fiel    { background: #dbeafe; color: #1e40af; }
+  .level-vip     { background: #fef3c7; color: #92400e; }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 700px) {
     .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 16px; }
@@ -592,6 +1136,16 @@
     header { padding: 0 16px; }
     .orders-grid { grid-template-columns: 1fr; }
     .login-card { padding: 36px 24px; }
+    .main-nav { padding: 12px 16px 0; }
+    .product-table-head { display: none; }
+    .product-row {
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto auto;
+    }
+    .product-row > :nth-child(2),
+    .product-row > :nth-child(3) { display: none; }
+    .product-actions { grid-column: 2; grid-row: 1 / 4; align-self: center; }
+    .form-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -637,6 +1191,19 @@
     </div>
   </header>
 
+  <!-- Nav Principal -->
+  <div class="main-nav">
+    <button class="main-nav-btn active" id="nav-pedidos" onclick="switchView('pedidos')">
+      🧾 Pedidos <span class="main-nav-badge" id="nav-badge-pedidos">0</span>
+    </button>
+    <button class="main-nav-btn" id="nav-cardapio" onclick="switchView('cardapio')">
+      🍱 Cardápio <span class="main-nav-badge" id="nav-badge-cardapio" style="background:var(--muted)">0</span>
+    </button>
+    <button class="main-nav-btn" id="nav-clientes" onclick="switchView('clientes')">
+      👥 Clientes
+    </button>
+  </div>
+
   <!-- Stats Bar -->
   <div class="stats-bar">
     <div class="stat-card total">
@@ -659,6 +1226,18 @@
 
   <!-- Main -->
   <div class="main">
+
+    <!-- ═══ VIEW PEDIDOS ═══ -->
+    <div id="view-pedidos">
+
+    <!-- Config: Tempo de Entrega -->
+    <div class="config-bar">
+      <label for="tempo-input">⏱ Tempo estimado de entrega:</label>
+      <input type="text" id="tempo-input" placeholder="30-45 min" maxlength="20">
+      <button onclick="saveTempoEntrega()">Salvar</button>
+      <button onclick="seedCardapio()" id="btn-seed" style="background:#16a34a;margin-left:8px">🌱 Popular Cardápio</button>
+    </div>
+
     <!-- Filter Tabs -->
     <div class="filter-tabs">
       <button class="tab-btn active" data-filter="todos" onclick="setFilter('todos')">
@@ -684,6 +1263,137 @@
         <div class="empty-icon">⏳</div>
         <div class="empty-title">Carregando pedidos...</div>
       </div>
+    </div>
+
+    </div><!-- /view-pedidos -->
+
+    <!-- ═══ VIEW CARDÁPIO ═══ -->
+    <div id="view-cardapio" style="display:none">
+
+      <div class="cardapio-toolbar">
+        <div class="cardapio-toolbar-left">
+          <button class="cat-filter-btn active" data-cat="todos" onclick="setCatFilter('todos',this)">Todos</button>
+          <button class="cat-filter-btn" data-cat="promocao" onclick="setCatFilter('promocao',this)">Promoções</button>
+          <button class="cat-filter-btn" data-cat="sushi" onclick="setCatFilter('sushi',this)">Sushi</button>
+          <button class="cat-filter-btn" data-cat="sashimi" onclick="setCatFilter('sashimi',this)">Sashimi</button>
+          <button class="cat-filter-btn" data-cat="temaki" onclick="setCatFilter('temaki',this)">Temaki</button>
+          <button class="cat-filter-btn" data-cat="combinado" onclick="setCatFilter('combinado',this)">Combinados</button>
+          <button class="cat-filter-btn" data-cat="quente" onclick="setCatFilter('quente',this)">Pratos Quentes</button>
+          <button class="cat-filter-btn" data-cat="bebida" onclick="setCatFilter('bebida',this)">Bebidas</button>
+          <button class="cat-filter-btn" data-cat="sobremesa" onclick="setCatFilter('sobremesa',this)">Sobremesas</button>
+        </div>
+        <button class="btn-add-product" onclick="openProductModal()">
+          ＋ Adicionar Produto
+        </button>
+      </div>
+
+      <div class="product-table" id="product-table">
+        <div class="product-table-head">
+          <div>Produto</div>
+          <div>Categoria</div>
+          <div>Preço</div>
+          <div>Badge</div>
+          <div style="text-align:right">Ações</div>
+        </div>
+        <div id="product-list">
+          <div class="empty-state">
+            <div class="empty-icon">⏳</div>
+            <div class="empty-title">Carregando cardápio...</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /view-cardapio -->
+
+    <!-- ═══ VIEW CLIENTES ═══ -->
+    <div id="view-clientes" style="display:none">
+      <div class="clients-table" id="clients-table">
+        <div class="clients-table-head">
+          <div>Cliente</div>
+          <div>Pedidos</div>
+          <div>Total Gasto</div>
+          <div>Nível</div>
+        </div>
+        <div id="clients-list">
+          <div class="empty-state">
+            <div class="empty-icon">⏳</div>
+            <div class="empty-title">Carregando clientes...</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /view-clientes -->
+
+  </div><!-- /main -->
+</div><!-- /app-screen -->
+
+<!-- ═══ MODAL ADICIONAR / EDITAR PRODUTO ═══ -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal-card">
+    <div class="modal-card-header">
+      <span class="modal-card-title" id="modal-title">Novo Produto</span>
+      <button class="modal-close-btn" onclick="closeProductModal()">✕</button>
+    </div>
+    <div class="modal-card-body">
+      <input type="hidden" id="prod-doc-id">
+      <div class="form-row">
+        <div class="form-group full">
+          <label class="form-label">Nome <span class="req">*</span></label>
+          <input class="form-input" id="prod-nome" placeholder="Ex: Sushi Salmão">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label class="form-label">Descrição</label>
+          <textarea class="form-textarea" id="prod-desc" placeholder="Breve descrição do produto..."></textarea>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Preço (R$) <span class="req">*</span></label>
+          <input class="form-input" id="prod-preco" type="number" step="0.01" min="0" placeholder="0,00">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Categoria <span class="req">*</span></label>
+          <select class="form-select" id="prod-cat">
+            <option value="">Selecione...</option>
+            <option value="combinado">Combinado</option>
+            <option value="sushi">Sushi</option>
+            <option value="sashimi">Sashimi</option>
+            <option value="temaki">Temaki</option>
+            <option value="quente">Pratos Quentes</option>
+            <option value="bebida">Bebida</option>
+            <option value="sobremesa">Sobremesas</option>
+            <option value="promocao">Promoções</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Badge (opcional)</label>
+          <input class="form-input" id="prod-badge" placeholder="Ex: TOP, HOT, NEW">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Emoji (ícone)</label>
+          <input class="form-input" id="prod-emoji" placeholder="Ex: 🍣">
+        </div>
+      </div>
+    </div>
+    <div class="modal-card-footer">
+      <button class="btn-cancel" onclick="closeProductModal()">Cancelar</button>
+      <button class="btn-save" id="btn-save-prod" onclick="saveProduct()">Salvar produto</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL CONFIRMAR EXCLUSÃO ═══ -->
+<div class="confirm-overlay" id="confirm-del-overlay">
+  <div class="confirm-card">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">Excluir produto?</div>
+    <div class="confirm-sub" id="confirm-del-name">Esta ação não pode ser desfeita.</div>
+    <div class="confirm-btns">
+      <button class="btn-confirm-cancel" onclick="closeConfirmDel()">Cancelar</button>
+      <button class="btn-confirm-del" id="btn-confirm-del" onclick="confirmDelete()">Excluir</button>
     </div>
   </div>
 </div>
@@ -845,6 +1555,8 @@ function showApp(user) {
 
   // Start listening
   startListening();
+  startListeningProducts();
+  loadTempoEntregaAdmin();
 }
 
 // ── FIRESTORE LISTENER ──
@@ -1066,6 +1778,9 @@ function updateStats() {
   document.getElementById('stat-prep').textContent = cnt('preparando');
   document.getElementById('stat-caminho').textContent = cnt('caminho');
   document.getElementById('stat-entregue').textContent = cnt('entregue');
+  // Atualiza badge da nav
+  const navBadge = document.getElementById('nav-badge-pedidos');
+  if (navBadge) navBadge.textContent = Object.values(allOrders).length;
 }
 
 // ── UTILS ──
@@ -1087,10 +1802,452 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ── TEMPO DE ENTREGA CONFIG ──
+function loadTempoEntregaAdmin() {
+  db.collection('config').doc('tenshin').get().then(doc => {
+    if (doc.exists && doc.data().tempoEntrega) {
+      const input = document.getElementById('tempo-input');
+      if (input) input.value = doc.data().tempoEntrega;
+    }
+  }).catch(e => console.warn('Erro ao carregar config:', e));
+}
+
+async function saveTempoEntrega() {
+  const input = document.getElementById('tempo-input');
+  const val   = input?.value?.trim();
+  if (!val) return;
+  try {
+    await db.collection('config').doc('tenshin').set({ tempoEntrega: val }, { merge: true });
+    showToast('Tempo de entrega atualizado!', val, '⏱');
+  } catch(e) {
+    console.error('Erro ao salvar tempo:', e);
+    showToast('Erro ao salvar', 'Tente novamente', '⚠️');
+  }
+}
+
+// ── SWITCH VIEW (Pedidos / Cardápio / Clientes) ──
+let currentView = 'pedidos';
+
+function switchView(view) {
+  currentView = view;
+  document.getElementById('view-pedidos').style.display  = view === 'pedidos'  ? 'block' : 'none';
+  document.getElementById('view-cardapio').style.display = view === 'cardapio' ? 'block' : 'none';
+  document.getElementById('view-clientes').style.display = view === 'clientes' ? 'block' : 'none';
+  document.getElementById('nav-pedidos').classList.toggle('active',  view === 'pedidos');
+  document.getElementById('nav-cardapio').classList.toggle('active', view === 'cardapio');
+  document.getElementById('nav-clientes').classList.toggle('active', view === 'clientes');
+  if (view === 'cardapio') renderProducts();
+  if (view === 'clientes') renderClients();
+}
+
+// ── CLIENTES ──
+function getClientLevel(totalPedidos, totalGasto) {
+  if (totalPedidos >= 8 || totalGasto >= 500) return { label: '⭐ VIP',   cls: 'level-vip' };
+  if (totalPedidos >= 3)                       return { label: '🔵 Fiel',  cls: 'level-fiel' };
+  return                                               { label: '🆕 Novo', cls: 'level-novo' };
+}
+
+function renderClients() {
+  const list = document.getElementById('clients-list');
+  const orders = Object.values(allOrders);
+
+  if (orders.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">Nenhum pedido ainda</div><div class="empty-sub">Os clientes aparecerão aqui conforme os pedidos chegarem.</div></div>`;
+    return;
+  }
+
+  // Agrega por userId (ou nome se não tiver userId)
+  const map = {};
+  orders.forEach(o => {
+    const key   = o.userId || (o.nomeCliente || o.nome || '?');
+    const nome  = o.nomeCliente || o.nome || o.cliente || '—';
+    const email = o.userEmail || o.email || '';
+    const total = o.total || o.totalPedido || 0;
+    if (!map[key]) map[key] = { nome, email, pedidos: 0, gasto: 0 };
+    map[key].pedidos++;
+    map[key].gasto += total;
+    // Atualiza nome se tiver dado mais recente
+    if (nome !== '—') map[key].nome = nome;
+    if (email) map[key].email = email;
+  });
+
+  const clients = Object.values(map).sort((a, b) => b.gasto - a.gasto);
+
+  list.innerHTML = clients.map(c => {
+    const level = getClientLevel(c.pedidos, c.gasto);
+    return `<div class="client-row">
+      <div>
+        <div class="client-name">${escHtml(c.nome)}</div>
+        ${c.email ? `<div class="client-email">${escHtml(c.email)}</div>` : ''}
+      </div>
+      <div style="font-size:14px;font-weight:600;color:var(--text)">${c.pedidos}</div>
+      <div style="font-size:14px;font-weight:700;color:var(--text)">${formatMoney(c.gasto)}</div>
+      <div><span class="client-level ${level.cls}">${level.label}</span></div>
+    </div>`;
+  }).join('')
+    || `<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">Sem dados</div></div>`;
+}
+
+// ── CARDÁPIO STATE ──
+let allProducts    = {};   // docId → produto
+let catFilterAtivo = 'todos';
+let productUnsubscribe = null;
+
+function startListeningProducts() {
+  if (productUnsubscribe) return; // já ouvindo
+  productUnsubscribe = db.collection('cardapio')
+    .orderBy('createdAt', 'asc')
+    .onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const id   = change.doc.id;
+        const data = { ...change.doc.data(), _docId: id };
+        if (change.type === 'removed') delete allProducts[id];
+        else allProducts[id] = data;
+      });
+      document.getElementById('nav-badge-cardapio').textContent = Object.keys(allProducts).length;
+      if (currentView === 'cardapio') renderProducts();
+    }, err => { console.error('Cardápio error:', err); });
+}
+
+// ── CAT FILTER ──
+function setCatFilter(cat, el) {
+  catFilterAtivo = cat;
+  document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderProducts();
+}
+
+// ── RENDER PRODUTOS ──
+function renderProducts() {
+  const list = document.getElementById('product-list');
+  let prods = Object.values(allProducts);
+
+  if (catFilterAtivo !== 'todos') {
+    prods = prods.filter(p => p.cat === catFilterAtivo);
+  }
+
+  // Ordenar por categoria depois por nome
+  const catOrder = { combinado:0, sushi:1, sashimi:2, temaki:3, quente:4, bebida:5, sobremesa:6, promocao:7 };
+  prods.sort((a,b) => {
+    const ca = catOrder[a.cat] ?? 9;
+    const cb = catOrder[b.cat] ?? 9;
+    if (ca !== cb) return ca - cb;
+    return (a.nome||'').localeCompare(b.nome||'');
+  });
+
+  if (prods.length === 0) {
+    list.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🍱</div>
+      <div class="empty-title">Nenhum produto cadastrado</div>
+      <div class="empty-sub">Clique em "Adicionar Produto" para começar.</div>
+    </div>`;
+    return;
+  }
+
+  const catNames = { combinado:'Combinado', sushi:'Sushi', sashimi:'Sashimi', temaki:'Temaki', quente:'Pratos Quentes', bebida:'Bebida', sobremesa:'Sobremesas', promocao:'Promoções' };
+
+  list.innerHTML = prods.map(p => {
+    const preco = formatMoney(p.preco || 0);
+    const cat   = p.cat || '';
+    const catLabel = catNames[cat] || cat;
+    const badge = p.badge ? `<span class="product-badge-label">${escHtml(p.badge)}</span>` : `<span style="color:var(--muted);font-size:12px">—</span>`;
+
+    return `<div class="product-row">
+      <div>
+        <div class="product-name">${escHtml(p.nome || '—')}</div>
+        <div class="product-desc">${escHtml(p.desc || '')}</div>
+      </div>
+      <div><span class="product-cat-badge cat-badge-${cat}">${escHtml(catLabel)}</span></div>
+      <div class="product-price">${preco}</div>
+      <div>${badge}</div>
+      <div class="product-actions">
+        <button class="prod-btn" onclick="openProductModal('${p._docId}')">✏️ Editar</button>
+        <button class="prod-btn del" onclick="openConfirmDel('${p._docId}','${escHtml(p.nome||'')}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── MODAL PRODUTO ──
+let editingDocId = null;
+
+function openProductModal(docId) {
+  editingDocId = docId || null;
+
+  // Limpa campos
+  ['prod-nome','prod-desc','prod-preco','prod-badge','prod-emoji'].forEach(id => {
+    document.getElementById(id).value = '';
+    document.getElementById(id).classList.remove('error');
+  });
+  document.getElementById('prod-cat').value = '';
+  document.getElementById('prod-cat').classList.remove('error');
+  document.getElementById('prod-doc-id').value = docId || '';
+
+  if (docId && allProducts[docId]) {
+    const p = allProducts[docId];
+    document.getElementById('modal-title').textContent  = 'Editar Produto';
+    document.getElementById('prod-nome').value   = p.nome  || '';
+    document.getElementById('prod-desc').value   = p.desc  || '';
+    document.getElementById('prod-preco').value  = p.preco || '';
+    document.getElementById('prod-cat').value    = p.cat   || '';
+    document.getElementById('prod-badge').value  = p.badge || '';
+    document.getElementById('prod-emoji').value  = p.emoji || '';
+  } else {
+    document.getElementById('modal-title').textContent = 'Novo Produto';
+  }
+
+  document.getElementById('product-modal').classList.add('open');
+}
+
+function closeProductModal() {
+  document.getElementById('product-modal').classList.remove('open');
+  editingDocId = null;
+}
+
+async function saveProduct() {
+  const nome  = document.getElementById('prod-nome').value.trim();
+  const desc  = document.getElementById('prod-desc').value.trim();
+  const preco = parseFloat(document.getElementById('prod-preco').value);
+  const cat   = document.getElementById('prod-cat').value;
+  const badge = document.getElementById('prod-badge').value.trim().toUpperCase();
+  const emoji = document.getElementById('prod-emoji').value.trim();
+
+  // Validação
+  let ok = true;
+  if (!nome) { document.getElementById('prod-nome').classList.add('error'); ok = false; }
+  if (!preco || isNaN(preco) || preco < 0) { document.getElementById('prod-preco').classList.add('error'); ok = false; }
+  if (!cat)  { document.getElementById('prod-cat').classList.add('error');  ok = false; }
+  if (!ok) return;
+
+  const btn = document.getElementById('btn-save-prod');
+  btn.disabled = true;
+  btn.textContent = 'Salvando...';
+
+  const data = {
+    nome, desc, preco, cat,
+    ...(badge ? { badge } : { badge: '' }),
+    ...(emoji ? { emoji } : {}),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+
+  try {
+    if (editingDocId) {
+      await db.collection('cardapio').doc(editingDocId).update(data);
+      showToast('Produto atualizado!', nome, '✏️');
+    } else {
+      data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+      await db.collection('cardapio').add(data);
+      showToast('Produto adicionado!', nome, '✅');
+    }
+    closeProductModal();
+  } catch(err) {
+    console.error('Erro ao salvar produto:', err);
+    showToast('Erro ao salvar', 'Tente novamente', '⚠️');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Salvar produto';
+  }
+}
+
+// ── CONFIRMAR EXCLUSÃO ──
+let deletingDocId = null;
+
+function openConfirmDel(docId, nome) {
+  deletingDocId = docId;
+  document.getElementById('confirm-del-name').textContent = `"${nome}" será removido do cardápio permanentemente.`;
+  document.getElementById('confirm-del-overlay').classList.add('open');
+}
+
+function closeConfirmDel() {
+  document.getElementById('confirm-del-overlay').classList.remove('open');
+  deletingDocId = null;
+}
+
+async function confirmDelete() {
+  if (!deletingDocId) return;
+  const btn = document.getElementById('btn-confirm-del');
+  btn.disabled = true;
+  btn.textContent = 'Excluindo...';
+  try {
+    await db.collection('cardapio').doc(deletingDocId).delete();
+    showToast('Produto excluído', '', '🗑️');
+    closeConfirmDel();
+  } catch(err) {
+    console.error('Erro ao excluir:', err);
+    showToast('Erro ao excluir', 'Tente novamente', '⚠️');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Excluir';
+  }
+}
+
+// Inicia listener de produtos junto com a app
+const _origShowApp = showApp;
+// (startListeningProducts é chamado em showApp via patch abaixo)
+
+// Fecha modais ao clicar no overlay
+document.getElementById('product-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeProductModal();
+});
+document.getElementById('confirm-del-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeConfirmDel();
+});
+
+// ESC fecha modais
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeProductModal();
+    closeConfirmDel();
+  }
+});
+
+/* ---- SEED DO CARDÁPIO ---- */
+async function seedCardapio() {
+  const btn = document.getElementById('btn-seed');
+  if (!confirm('Isso irá popular o Firestore com todos os produtos do cardápio Tenshin. Continuar?')) return;
+  btn.disabled = true;
+  btn.textContent = '⏳ Populando...';
+
+  const produtos = [
+    // COMBINADOS
+    {nome:'Combinado Tenshin — 40 peças', desc:'5 Sashimi salmão · 5 Atum · 5 Peixe branco · 5 Lula · 4 Uramaki · 4 Uramaki skin couve · 4 Hossomaki · 4 Hot Roll · 4 Nigiri skin', preco:119.90, cat:'combinado', badge:'TOP', emoji:'🍱', ordem:1},
+    {nome:'Combinado Aika — 14 peças + 1 temaki', desc:'4 Sashimi salmão · 2 Nigiri salmão · 4 Hossomaki salmão · 4 Hot Roll salmão · 1 Temaki salmão', preco:84.90, cat:'combinado', badge:'', emoji:'🍱', ordem:2},
+    {nome:'Combinado Emy — 16 peças + 1 temaki', desc:'8 Uramaki salmão · 4 Nigiri salmão · 4 Hot Roll salmão · 1 Temaki shimeji', preco:79.90, cat:'combinado', badge:'', emoji:'🍱', ordem:3},
+    {nome:'Combinado Ogawa — 12 peças + 1 temaki + prato', desc:'1 Teppanyaki salmão · 8 Hot Roll skin couve · 4 Harumaki queijo · 1 Temaki lula fry', preco:99.90, cat:'combinado', badge:'', emoji:'🍱', ordem:4},
+    // HOT ROLL
+    {nome:'Hot Roll Salmão', desc:'8 uni · Hossomaki empanado na farinha Panko e molho tare. Cream cheese opcional.', preco:32.90, cat:'sushi', badge:'HOT', emoji:'🔥', ordem:10},
+    {nome:'Hot Roll Skin', desc:'8 uni · Hossomaki com pele de salmão empanado na farinha Panko.', preco:34.90, cat:'sushi', badge:'HOT', emoji:'🔥', ordem:11},
+    {nome:'Hot Roll Tenshin', desc:'8 uni · Uramaki de salmão empanado na Panko com recheio de shimeji.', preco:38.90, cat:'sushi', badge:'NEW', emoji:'🔥', ordem:12},
+    // URAMAKI
+    {nome:'Uramaki Salmão', desc:'8 uni · Peixe envolto com nori, arroz e gergelim torrado.', preco:28.90, cat:'sushi', badge:'', emoji:'🍣', ordem:20},
+    {nome:'Uramaki Salmão Skin', desc:'8 uni · Salmão com pele grelhada, arroz e gergelim.', preco:29.90, cat:'sushi', badge:'', emoji:'🍣', ordem:21},
+    {nome:'Uramaki Salmão Skin Couve', desc:'8 uni · Salmão skin com couve crispy, arroz e gergelim.', preco:30.90, cat:'sushi', badge:'', emoji:'🍣', ordem:22},
+    {nome:'Uramaki Atum', desc:'8 uni · Atum envolto com nori, arroz e gergelim torrado.', preco:30.90, cat:'sushi', badge:'', emoji:'🍣', ordem:23},
+    {nome:'Uramaki Camarão', desc:'8 uni · Camarão envolto com nori, arroz e gergelim.', preco:32.90, cat:'sushi', badge:'', emoji:'🍣', ordem:24},
+    {nome:'Uramaki Italian', desc:'8 uni · Rúcula, tomate seco e ricota.', preco:29.90, cat:'sushi', badge:'', emoji:'🍣', ordem:25},
+    {nome:'Uramaki Califórnia', desc:'8 uni · Manga, pepino e Kani.', preco:28.90, cat:'sushi', badge:'', emoji:'🍣', ordem:26},
+    // GUNKAN
+    {nome:'Gunkan Salmão', desc:'6 uni · Arroz envolto por salmão e recheio.', preco:26.90, cat:'sushi', badge:'', emoji:'🍣', ordem:30},
+    {nome:'Gunkan Camarão', desc:'6 uni · Arroz com camarão e recheio especial.', preco:28.90, cat:'sushi', badge:'', emoji:'🍣', ordem:31},
+    {nome:'Gunkan Ovas de Capelin', desc:'6 uni · Arroz com ovas de capelin.', preco:28.90, cat:'sushi', badge:'', emoji:'🍣', ordem:32},
+    {nome:'Gunkan Rúcula Tomate e Ricota', desc:'6 uni · Arroz com rúcula, tomate seco e ricota.', preco:26.90, cat:'sushi', badge:'', emoji:'🍣', ordem:33},
+    {nome:'Gunkan Atum', desc:'6 uni · Arroz envolto com atum fresco.', preco:28.90, cat:'sushi', badge:'', emoji:'🍣', ordem:34},
+    {nome:'Gunkan Kani Kama', desc:'6 uni · Arroz com kani kama.', preco:26.90, cat:'sushi', badge:'', emoji:'🍣', ordem:35},
+    {nome:'Gunkan Couve Crispy', desc:'6 uni · Arroz com couve crispy.', preco:25.90, cat:'sushi', badge:'', emoji:'🍣', ordem:36},
+    // HOSSOMAKI
+    {nome:'Hossomaki Salmão', desc:'8 uni · Peixe envolto com arroz e nori.', preco:22.90, cat:'sushi', badge:'', emoji:'🍣', ordem:40},
+    {nome:'Hossomaki Atum', desc:'8 uni · Atum envolto com arroz e nori.', preco:22.90, cat:'sushi', badge:'', emoji:'🍣', ordem:41},
+    {nome:'Hossomaki Camarão', desc:'8 uni · Camarão envolto com arroz e nori.', preco:24.90, cat:'sushi', badge:'', emoji:'🍣', ordem:42},
+    {nome:'Hossomaki Pepino', desc:'8 uni · Pepino fresco envolto com arroz e nori.', preco:18.90, cat:'sushi', badge:'', emoji:'🍣', ordem:43},
+    {nome:'Hossomaki Kani', desc:'8 uni · Kani envolto com arroz e nori.', preco:22.90, cat:'sushi', badge:'', emoji:'🍣', ordem:44},
+    // NIGUIRI
+    {nome:'Niguiri Salmão', desc:'10 uni · Arroz com salmão fresco por cima.', preco:35.90, cat:'sushi', badge:'', emoji:'🍣', ordem:50},
+    {nome:'Niguiri Skin Couve', desc:'10 uni · Arroz com salmão skin e couve crispy.', preco:37.90, cat:'sushi', badge:'', emoji:'🍣', ordem:51},
+    {nome:'Niguiri Atum', desc:'10 uni · Arroz com atum fresco por cima.', preco:37.90, cat:'sushi', badge:'', emoji:'🍣', ordem:52},
+    {nome:'Niguiri Peixe Branco', desc:'10 uni · Arroz com peixe branco fresco.', preco:35.90, cat:'sushi', badge:'', emoji:'🍣', ordem:53},
+    {nome:'Niguiri Camarão', desc:'10 uni · Arroz com camarão por cima.', preco:37.90, cat:'sushi', badge:'', emoji:'🍣', ordem:54},
+    {nome:'Niguiri Tentáculos de Lula', desc:'10 uni · Arroz com tentáculos de lula.', preco:36.90, cat:'sushi', badge:'', emoji:'🍣', ordem:55},
+    {nome:'Niguiri Salmão Maçaricado', desc:'10 uni · Arroz com salmão finalizado na chama.', preco:38.90, cat:'sushi', badge:'NEW', emoji:'🍣', ordem:56},
+    // ENTRADAS FRIAS
+    {nome:'Sunomono 100g', desc:'Salada de pepino agridoce. Entrada fria refrescante.', preco:18.90, cat:'sashimi', badge:'', emoji:'🥗', ordem:60},
+    {nome:'Ceviche 200g', desc:'Tilápias em cubos, cebola roxa e especiarias.', preco:28.90, cat:'sashimi', badge:'', emoji:'🐟', ordem:61},
+    {nome:'Carpaccio de Salmão', desc:'Fatias finas de salmão com molho de alcaparras.', preco:32.90, cat:'sashimi', badge:'', emoji:'🐟', ordem:62},
+    {nome:'Carpaccio de Tilápia', desc:'Fatias finas de tilápia com molho Ponzu.', preco:28.90, cat:'sashimi', badge:'', emoji:'🐟', ordem:63},
+    {nome:'Tartar de Salmão', desc:'Salmão batido com especiarias. Servido frio.', preco:34.90, cat:'sashimi', badge:'', emoji:'🐟', ordem:64},
+    // SASHIMI
+    {nome:'Sashimi Salmão', desc:'10 uni · Fatias finas de salmão cru. Acompanha shoyu e wasabi.', preco:38.90, cat:'sashimi', badge:'', emoji:'🐟', ordem:70},
+    {nome:'Sashimi Peixe Branco', desc:'10 uni · Fatias finas de peixe branco fresco.', preco:36.90, cat:'sashimi', badge:'', emoji:'🐟', ordem:71},
+    {nome:'Sashimi Atum', desc:'10 uni · Fatias finas de atum cru. Rico em ômega 3.', preco:38.90, cat:'sashimi', badge:'', emoji:'🐟', ordem:72},
+    {nome:'Sashimi Lula', desc:'10 uni · Fatias finas de lula fresca.', preco:34.90, cat:'sashimi', badge:'', emoji:'🦑', ordem:73},
+    {nome:'Sashimi Polvo', desc:'10 uni · Fatias finas de polvo.', preco:36.90, cat:'sashimi', badge:'', emoji:'🐙', ordem:74},
+    // TEMAKI
+    {nome:'Temaki Salmão Grelhado', desc:'120g · Cone de arroz com nori e salmão grelhado.', preco:24.90, cat:'temaki', badge:'', emoji:'🌯', ordem:80},
+    {nome:'Temaki Salmão', desc:'120g · Cone de arroz com nori. Peixe batido no tataki.', preco:22.90, cat:'temaki', badge:'', emoji:'🌯', ordem:81},
+    {nome:'Temaki Salmão Skin', desc:'120g · Cone de arroz com pele de salmão grelhado.', preco:23.90, cat:'temaki', badge:'', emoji:'🌯', ordem:82},
+    {nome:'Temaki Salmão Skin Couve', desc:'120g · Salmão skin com couve crispy.', preco:24.90, cat:'temaki', badge:'', emoji:'🌯', ordem:83},
+    {nome:'Temaki Atum', desc:'120g · Cone de arroz com atum batido no tataki.', preco:23.90, cat:'temaki', badge:'', emoji:'🌯', ordem:84},
+    {nome:'Temaki Camarão Fry', desc:'120g · Camarão empanado na Panko e frito.', preco:25.90, cat:'temaki', badge:'HOT', emoji:'🌯', ordem:85},
+    {nome:'Temaki Lula Fry', desc:'120g · Lula empanada na farinha Panko e frita.', preco:24.90, cat:'temaki', badge:'', emoji:'🌯', ordem:86},
+    {nome:'Temaki Salmão Fry', desc:'120g · Cubos de salmão empanados na farinha Panko.', preco:24.90, cat:'temaki', badge:'', emoji:'🌯', ordem:87},
+    // PRATOS QUENTES
+    {nome:'Harumaki de Queijo', desc:'6 uni · Harumaki mini recheado com queijo. Crocante por fora.', preco:18.90, cat:'quente', badge:'', emoji:'🥟', ordem:90},
+    {nome:'Harumaki de Legumes', desc:'6 uni · Harumaki mini recheado com legumes variados.', preco:16.90, cat:'quente', badge:'', emoji:'🥟', ordem:91},
+    {nome:'Harumaki de Camarão', desc:'2 uni · Harumaki médio recheado com camarão.', preco:22.90, cat:'quente', badge:'', emoji:'🥟', ordem:92},
+    {nome:'Crispy de Cebola 100g', desc:'Lâminas de cebola empanadas e fritas. Crocante.', preco:22.90, cat:'quente', badge:'', emoji:'🧅', ordem:93},
+    {nome:'Anéis de Lula Fry', desc:'15 uni · Lula empanada na farinha panko.', preco:32.90, cat:'quente', badge:'', emoji:'🦑', ordem:94},
+    {nome:'Camarão Fry', desc:'15 uni · Camarão empanado na farinha panko. Crocante.', preco:34.90, cat:'quente', badge:'', emoji:'🍤', ordem:95},
+    {nome:'Shimeji 200g', desc:'Shimeji salteado na manteiga e shoyu.', preco:28.90, cat:'quente', badge:'', emoji:'🍄', ordem:96},
+    {nome:'Yakisoba Tradicional 450g', desc:'Macarrão japonês salteado com carne e frango.', preco:38.90, cat:'quente', badge:'', emoji:'🍜', ordem:97},
+    {nome:'Teppanyaki de Salmão 300g', desc:'Salmão grelhado com legumes no estilo teppan.', preco:42.90, cat:'quente', badge:'', emoji:'🐟', ordem:98},
+    {nome:'Teppanyaki de Tilápia 300g', desc:'Tilápia grelhada com legumes no estilo teppan.', preco:38.90, cat:'quente', badge:'', emoji:'🐟', ordem:99},
+    {nome:'Gyoza Suíno', desc:'6 uni · Pastel japonês recheado com carne suína.', preco:28.90, cat:'quente', badge:'', emoji:'🥟', ordem:100},
+    {nome:'Gyoza Bovino', desc:'6 uni · Pastel japonês recheado com carne bovina.', preco:28.90, cat:'quente', badge:'', emoji:'🥟', ordem:101},
+    {nome:'Batata Frita 350g', desc:'Porção de batata frita crocante.', preco:18.90, cat:'quente', badge:'', emoji:'🍟', ordem:102},
+    {nome:'Porção de Tilápia 400g', desc:'Porção de tilápia grelhada.', preco:38.90, cat:'quente', badge:'', emoji:'🐟', ordem:103},
+    // BEBIDAS
+    {nome:'Água Natural 500ml', desc:'Água mineral natural gelada.', preco:5.00, cat:'bebida', badge:'', emoji:'💧', ordem:110},
+    {nome:'Água com Gás 500ml', desc:'Água mineral com gás gelada.', preco:6.00, cat:'bebida', badge:'', emoji:'💧', ordem:111},
+    {nome:'Água com Gás Sprite 510ml', desc:'Água com gás sabor Sprite.', preco:7.00, cat:'bebida', badge:'', emoji:'🥤', ordem:112},
+    {nome:'Suco Maracujá 290ml', desc:'Suco Dell Vale de maracujá gelado.', preco:8.00, cat:'bebida', badge:'', emoji:'🥤', ordem:113},
+    {nome:'Suco Uva 290ml', desc:'Suco Dell Vale de uva gelado.', preco:8.00, cat:'bebida', badge:'', emoji:'🥤', ordem:114},
+    {nome:'Suco Pêssego 290ml', desc:'Suco Dell Vale de pêssego gelado.', preco:8.00, cat:'bebida', badge:'', emoji:'🥤', ordem:115},
+    {nome:'Suco Goiaba 290ml', desc:'Suco Dell Vale de goiaba gelado.', preco:8.00, cat:'bebida', badge:'', emoji:'🥤', ordem:116},
+    {nome:'Suco de Laranja', desc:'Suco de laranja natural.', preco:10.00, cat:'bebida', badge:'', emoji:'🍊', ordem:117},
+    {nome:'Cerveja Sol', desc:'Cerveja Sol gelada.', preco:10.00, cat:'bebida', badge:'', emoji:'🍺', ordem:118},
+    {nome:'Estrella Galícia', desc:'Cerveja Estrella Galícia long neck gelada.', preco:12.00, cat:'bebida', badge:'', emoji:'🍺', ordem:119},
+    {nome:'Heineken Long Neck', desc:'Cerveja Heineken long neck gelada.', preco:14.00, cat:'bebida', badge:'', emoji:'🍺', ordem:120},
+    // SOBREMESAS
+    {nome:'Petit Gateau', desc:'Bolinho de chocolate com calda quente e sorvete de creme.', preco:24.90, cat:'sobremesa', badge:'', emoji:'🍫', ordem:130},
+    {nome:'Brownie com Sorvete', desc:'Brownie de chocolate com bola de sorvete de creme.', preco:22.90, cat:'sobremesa', badge:'', emoji:'🍫', ordem:131},
+    {nome:'Harumaki de Chocolate', desc:'Harumaki crocante recheado com chocolate derretido.', preco:19.90, cat:'sobremesa', badge:'', emoji:'🍫', ordem:132},
+    {nome:'Harumaki Doce de Leite', desc:'Harumaki crocante recheado com doce de leite cremoso.', preco:19.90, cat:'sobremesa', badge:'', emoji:'🍮', ordem:133},
+  ];
+
+  try {
+    // Primeiro verifica se já existe algo
+    const existing = await db.collection('cardapio').limit(1).get();
+    if (!existing.empty) {
+      if (!confirm('O cardápio já tem produtos. Deseja adicionar os produtos do seed mesmo assim?')) {
+        btn.disabled = false;
+        btn.textContent = '🌱 Popular Cardápio';
+        return;
+      }
+    }
+
+    // Firestore batch tem limite de 500 writes, dividir se necessário
+    const chunks = [];
+    for (let i = 0; i < produtos.length; i += 490) {
+      chunks.push(produtos.slice(i, i + 490));
+    }
+
+    for (const chunk of chunks) {
+      const b = db.batch();
+      chunk.forEach(p => {
+        const ref = db.collection('cardapio').doc();
+        b.set(ref, {...p, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      });
+      await b.commit();
+    }
+
+    showToast(`${produtos.length} produtos adicionados!`, 'Cardápio populado com sucesso', '✅');
+  } catch(err) {
+    console.error('Erro no seed:', err);
+    showToast('Erro ao popular', err.message, '⚠️');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🌱 Popular Cardápio';
+  }
+}
+
 /* ---- BOTÃO VOLTAR DO CELULAR ---- */
 history.pushState({tenshin: true}, '');
 window.addEventListener('popstate', function() {
-  // O admin não tem modais — só garante que não sai da página
+  // Fecha modal se estiver aberto, senão garante que não sai
+  if (document.getElementById('product-modal').classList.contains('open')) {
+    closeProductModal();
+  } else if (document.getElementById('confirm-del-overlay').classList.contains('open')) {
+    closeConfirmDel();
+  }
   history.pushState({tenshin: true}, '');
 });
 </script>
