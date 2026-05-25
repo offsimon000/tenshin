@@ -1086,6 +1086,13 @@ function formatTime(ts) {
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+/* ---- BOTÃO VOLTAR DO CELULAR ---- */
+history.pushState({tenshin: true}, '');
+window.addEventListener('popstate', function() {
+  // O admin não tem modais — só garante que não sai da página
+  history.pushState({tenshin: true}, '');
+});
 </script>
 </body>
 </html>

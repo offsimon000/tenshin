@@ -186,25 +186,29 @@ body{background:var(--bg);min-height:100vh}
 .overlay.open{display:flex}
 .modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:520px;padding:0 0 32px;max-height:90vh;overflow-y:auto}
 .modal-handle{width:36px;height:4px;border-radius:2px;background:var(--border);margin:12px auto 0}
-.modal-img{width:100%;height:200px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:80px}
+.modal-img{width:100%;height:210px;background:#efefef;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:72px}
+.modal-img img{width:100%;height:100%;object-fit:cover;display:block}
 .modal-body{padding:20px 20px 0}
-.modal-name{font-size:20px;font-weight:600;margin-bottom:6px}
+.modal-name{font-size:20px;font-weight:700;margin-bottom:6px;letter-spacing:-.02em}
 .modal-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px}
-.modal-opts{margin-bottom:20px}
-.modal-opts h4{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-.opt{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.modal-opts{margin-bottom:16px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
+.modal-opts-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;padding:12px 14px 10px;background:#fafafa;border-bottom:1px solid var(--border)}
+.opt{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
 .opt:last-child{border-bottom:none}
-.opt label{font-size:14px;cursor:pointer;display:flex;align-items:center;gap:10px}
-.opt input{accent-color:var(--red);width:18px;height:18px}
-.opt-price{font-size:14px;color:var(--muted)}
-.obs-box{background:var(--bg);border-radius:10px;padding:14px;margin-bottom:20px}
-.obs-box textarea{width:100%;background:none;border:none;outline:none;font-size:13px;color:var(--text);resize:none;font-family:inherit;line-height:1.5}
+.opt:hover{background:#fafafa}
+.opt label{font-size:14px;cursor:pointer;display:flex;align-items:center;gap:10px;flex:1}
+.opt input{accent-color:var(--red);width:18px;height:18px;flex-shrink:0;cursor:pointer}
+.opt-price{font-size:13px;color:var(--muted);white-space:nowrap;margin-left:8px}
+.obs-box{border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:20px;transition:border-color .2s}
+.obs-box:focus-within{border-color:var(--red)}
+.obs-box textarea{width:100%;background:none;border:none;outline:none;font-size:13px;color:var(--text);resize:none;font-family:inherit;line-height:1.5;min-height:48px}
 .obs-box textarea::placeholder{color:var(--muted)}
 .modal-footer{padding:0 20px;display:flex;align-items:center;gap:16px}
-.modal-qty{display:flex;align-items:center;gap:14px}
-.modal-qty button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.modal-qty span{font-size:17px;font-weight:600;min-width:24px;text-align:center}
-.modal-add{flex:1;background:var(--red);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s}
+.modal-qty{display:flex;align-items:center;gap:12px}
+.modal-qty button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.modal-qty button:hover{border-color:var(--red);color:var(--red)}
+.modal-qty span{font-size:17px;font-weight:700;min-width:24px;text-align:center}
+.modal-add{flex:1;background:var(--red);color:#fff;border:none;border-radius:12px;padding:16px;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;letter-spacing:-.01em}
 .modal-add:active{background:var(--red2)}
 
 /* CHECKOUT MODAL */
@@ -1133,12 +1137,12 @@ body{background:var(--bg);min-height:100vh}
 <div class="overlay" id="item-overlay" onclick="closeItem(event)">
   <div class="modal" id="item-modal">
     <div class="modal-handle"></div>
-    <div class="modal-img" id="modal-img">🍣</div>
+    <div class="modal-img" id="modal-img"></div>
     <div class="modal-body">
       <div class="modal-name" id="modal-name">Nome</div>
       <div class="modal-desc" id="modal-desc">Descrição</div>
       <div class="modal-opts" id="modal-opts">
-        <h4>Opcionais</h4>
+        <div class="modal-opts-title">Opcionais</div>
         <div class="opt"><label><input type="checkbox"> Com wasabi extra</label><span class="opt-price">+R$ 1,00</span></div>
         <div class="opt"><label><input type="checkbox"> Sem cream cheese</label><span class="opt-price">grátis</span></div>
         <div class="opt"><label><input type="checkbox"> Molho tarê extra</label><span class="opt-price">+R$ 1,50</span></div>
@@ -1402,10 +1406,27 @@ function refreshAllCtrls() {
 function openItem(item) {
   currentItem = item;
   modalQty = 1;
-  document.getElementById('modal-img').textContent = item.emoji;
+
+  // Foto real da categoria (igual aos cards)
+  const modalImgEl = document.getElementById('modal-img');
+  const catImgs = DEMO_IMGS[item.cat] || DEMO_IMGS['combinado'];
+  const imgUrl = catImgs[Math.floor(Math.random() * catImgs.length)];
+  modalImgEl.innerHTML = '';
+  const img = document.createElement('img');
+  img.src = imgUrl;
+  img.alt = item.nome;
+  img.onerror = function() { modalImgEl.innerHTML = `<span style="font-size:72px">${item.emoji}</span>`; };
+  modalImgEl.appendChild(img);
+
   document.getElementById('modal-name').textContent = item.nome;
   document.getElementById('modal-desc').textContent = item.desc;
   document.getElementById('modal-qty').textContent = 1;
+
+  // Reset opcionais e observação — nunca carrega estado do item anterior
+  document.querySelectorAll('#modal-opts input[type="checkbox"]').forEach(cb => cb.checked = false);
+  const textarea = document.querySelector('.obs-box textarea');
+  if (textarea) textarea.value = '';
+
   const opts = document.getElementById('modal-opts');
   opts.style.display = (['sushi','temaki','sashimi'].some(c => item.cat?.includes(c))) ? 'block' : 'none';
   updateModalBtn();
@@ -1812,6 +1833,30 @@ updateCart();
 // ESC fecha o drawer
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeDrawer();
+});
+
+/* ---- BOTÃO VOLTAR DO CELULAR ---- */
+// Empurra um estado inicial na pilha para interceptar o "voltar"
+history.pushState({tenshin: true}, '');
+
+window.addEventListener('popstate', function() {
+  // Fecha o que estiver aberto, na ordem de prioridade (do mais recente pro mais antigo)
+  const checks = [
+    () => document.getElementById('pay-confirm-overlay')?.classList.contains('open')   && (closePayConfirm(), true),
+    () => document.getElementById('success-overlay')?.classList.contains('open')       && (document.getElementById('success-overlay').classList.remove('open'), true),
+    () => document.getElementById('checkout-overlay')?.classList.contains('open')      && (closeCheckoutDirect(), true),
+    () => document.getElementById('cart-review-overlay')?.classList.contains('open')   && (closeCartReview(), true),
+    () => document.getElementById('item-overlay')?.classList.contains('open')          && (document.getElementById('item-overlay').classList.remove('open'), true),
+    () => document.getElementById('login-overlay')?.classList.contains('open')         && (closeLogin(), true),
+    () => document.getElementById('orders-overlay')?.classList.contains('open')        && (closeOrders(), true),
+    () => document.getElementById('privacy-overlay')?.classList.contains('open')       && (closePrivacy(), true),
+    () => document.getElementById('drawer')?.classList.contains('open')                && (closeDrawer(), true),
+  ];
+
+  checks.some(fn => fn()); // executa até fechar o primeiro que estiver aberto
+
+  // Sempre recoloca um estado na pilha — impede de sair do site
+  history.pushState({tenshin: true}, '');
 });
 
 /* ---- FORMATAÇÃO TELEFONE ---- */
