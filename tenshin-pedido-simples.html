@@ -1620,6 +1620,11 @@ function confirmOrder() {
   const pad    = n => String(n).padStart(2,'0');
   const dataStr = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
 
+  const rua    = isDelivery ? (document.getElementById('addr-rua')?.value?.trim()    || '') : '';
+  const bairro = isDelivery ? (document.getElementById('addr-bairro')?.value?.trim() || '') : '';
+  const comp   = isDelivery ? (document.getElementById('addr-comp')?.value?.trim()   || '') : '';
+  const obs    = document.querySelector('.obs-box textarea')?.value?.trim() || '';
+
   const orderData = {
     id: generateOrderId(),
     data: dataStr,
@@ -1629,6 +1634,12 @@ function confirmOrder() {
     pagamento: payMap[payEl?.value] || 'PIX',
     tipo: isDelivery ? 'Delivery' : 'Retirada',
     nome,
+    telefone: tel,
+    rua,
+    bairro,
+    complemento: comp,
+    endereco: isDelivery ? [rua, bairro, comp].filter(Boolean).join(', ') : '',
+    observacao: obs,
     status: 'preparando'
   };
 

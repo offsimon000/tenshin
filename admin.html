@@ -493,6 +493,42 @@
 
   .action-btn:disabled { opacity: .5; cursor: default; }
 
+  /* ── VER MAIS ── */
+  .ver-mais-btn {
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: none;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: color .15s, background .15s;
+  }
+  .ver-mais-btn:hover { background: var(--bg); color: var(--text); }
+  .ver-mais-btn svg { transition: transform .2s; }
+  .ver-mais-btn.open svg { transform: rotate(180deg); }
+
+  .card-details {
+    display: none;
+    padding: 12px 16px 4px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    font-size: 13px;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .card-details.open { display: flex; }
+  .detail-row { display: flex; gap: 8px; align-items: flex-start; }
+  .detail-label { font-weight: 700; color: var(--muted); font-size: 11px; min-width: 72px; padding-top: 1px; }
+  .detail-value { color: var(--text); flex: 1; }
+
   /* ── EMPTY STATE ── */
   .empty-state {
     grid-column: 1 / -1;
@@ -1713,6 +1749,33 @@ function renderCard(o) {
     </div>`;
   }).join('');
 
+  // Campos extras
+  const rua         = o.rua         || '';
+  const bairro      = o.bairro      || '';
+  const complemento = o.complemento || '';
+  const obs         = o.observacao  || o.obs || o.observacoes || '';
+  const email       = o.userEmail   || '';
+  const subtotal    = o.subtotal != null ? formatMoney(o.subtotal) : '—';
+  const entregaFee  = o.total != null && o.subtotal != null ? formatMoney(o.total - o.subtotal) : '—';
+  const dataCompleta = o.data || (o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString('pt-BR') : '');
+
+  // Monta linhas do "Ver mais"
+  const detailRows = [
+    tel          ? `<div class="detail-row"><span class="detail-label">📞 Telefone</span><span class="detail-value">${escHtml(tel)}</span></div>` : '',
+    email        ? `<div class="detail-row"><span class="detail-label">✉️ E-mail</span><span class="detail-value">${escHtml(email)}</span></div>` : '',
+    tipo === 'delivery' && rua
+      ? `<div class="detail-row"><span class="detail-label">📍 Rua</span><span class="detail-value">${escHtml(rua)}</span></div>` : '',
+    tipo === 'delivery' && bairro
+      ? `<div class="detail-row"><span class="detail-label">🏘️ Bairro</span><span class="detail-value">${escHtml(bairro)}</span></div>` : '',
+    tipo === 'delivery' && complemento
+      ? `<div class="detail-row"><span class="detail-label">🔑 Compl.</span><span class="detail-value">${escHtml(complemento)}</span></div>` : '',
+    obs          ? `<div class="detail-row"><span class="detail-label">📝 Obs.</span><span class="detail-value">${escHtml(obs)}</span></div>` : '',
+    `<div class="detail-row"><span class="detail-label">🧾 Subtotal</span><span class="detail-value">${subtotal}</span></div>`,
+    tipo === 'delivery'
+      ? `<div class="detail-row"><span class="detail-label">🛵 Entrega</span><span class="detail-value">${entregaFee}</span></div>` : '',
+    dataCompleta ? `<div class="detail-row"><span class="detail-label">📅 Data</span><span class="detail-value">${escHtml(dataCompleta)}</span></div>` : '',
+  ].filter(Boolean).join('');
+
   return `
     <div class="order-card" id="card-${docId}">
       <div class="card-header">
@@ -1738,6 +1801,11 @@ function renderCard(o) {
         </div>
         <div class="card-actions">${actions}</div>
       </div>
+      <div class="card-details" id="details-${docId}">${detailRows}</div>
+      <button class="ver-mais-btn" id="vermais-${docId}" onclick="toggleDetails('${docId}')">
+        Ver mais
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
     </div>`;
   } catch(err) {
     console.error('Erro ao renderizar card:', err, o);
@@ -1807,6 +1875,15 @@ function formatTime(ts) {
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toggleDetails(docId) {
+  const panel = document.getElementById('details-' + docId);
+  const btn   = document.getElementById('vermais-' + docId);
+  if (!panel) return;
+  const isOpen = panel.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  btn.childNodes[0].textContent = isOpen ? 'Ver menos ' : 'Ver mais ';
 }
 
 // ── TEMPO DE ENTREGA CONFIG ──
